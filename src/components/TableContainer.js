@@ -1,3 +1,5 @@
+import { ColumnContainer } from "./ColumnContainer.js";
+
 "use strict";
 
 export class TableContainer {
@@ -9,17 +11,21 @@ export class TableContainer {
 
     this.createProxyTable();
 
-    this.proxy.innerHTML = "<div>Valami</div>";
-    this.proxy.innerHTML = "<div>Valami2</div>";
+    this.gridContainer.appendChild(new ColumnContainer(1));
+    this.gridContainer.appendChild(new ColumnContainer(2));
+    this.gridContainer.appendChild(new ColumnContainer(3));
   }
 
   createProxyTable() {
-    this.proxy = new Proxy(this.container, {
+    this.gridContainer = document.querySelector("#grid-container");
+
+    this.proxy = new Proxy(this.gridContainer, {
       set(target, property, value) {
         const prevValue = target[property];
+        const columns = `${prevValue}${value}`;
 
-        //document.body[property] = `${prevValue}${value}`;
-        return Reflect.set(target, property, value);
+        this.gridContainer[property] = columns;
+        return Reflect.set(target, property, columns);
       }
     })
   }
