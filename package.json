@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Steve30/UltimateGridSystem/issues"
   },
-  "homepage": "https://github.com/Steve30/UltimateGridSystem#readme"
+  "homepage": "https://github.com/Steve30/UltimateGridSystem#readme",
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "gulp": "^3.9.1"
+  }
 }
