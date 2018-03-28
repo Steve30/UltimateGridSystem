@@ -140,6 +140,7 @@ input {
   padding: 0;
   border: 0;
   cursor: inherit;
+  width: 100%;
 }
 
 #layout {
@@ -178,6 +179,7 @@ input {
 #grid-container .column label {
   border-top: solid 1px #000;
   box-sizing: border-box;
+  display: flex;
 }
 
 #grid-container .column .resize-border {
