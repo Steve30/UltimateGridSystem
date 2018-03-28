@@ -20,10 +20,29 @@ export class ColumnContainer {
     return this.allSearchFieldPromise;
   }
 
+  static set $selectedResizeColumn(value) {
+    this.selectedResizeColumn = value;
+  }
+
+  static get $selectedResizeColumn() {
+    return this.selectedResizeColumn;
+  }
+
+  static set $templateColumnsStyle(value) {
+    this.templateColumnsStyle.push(value);
+  }
+
+  static get $templateColumnsStyle() {
+    return this.templateColumnsStyle;
+  }
+
   constructor(columnName, columnConfig) {
     this.container = document.querySelector("#column-template").cloneNode();
     this.columnName = columnName;
-    const {isSearch, set, searchValue } = columnConfig;
+    const { isSearch, set, searchValue } = columnConfig;
+
+    ColumnContainer.$templateColumnsStyle = "auto";
+    this.columnIndex = ColumnContainer.$templateColumnsStyle.length - 1;
 
     const searchTemplate = isSearch ? `<input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}'/>` : "";
 
@@ -35,8 +54,16 @@ export class ColumnContainer {
       <strong>${columnName}</strong>
       ${searchTemplate}
       ${cellTemplates}
-      <a href="" style="grid-area: cell-border"></a>
+      <a href="" class="resize-border" style="grid-area: cell-border"></a>
     </div>`;
+  }
+
+  static resetTemplateColumnsStyle() {
+    this.templateColumnsStyle = [];
+  }
+
+  static setCurrentTemplateColumn(index, value) {
+    this.templateColumnsStyle[index] = `${value}px`;
   }
 
   cloneContent() {
@@ -46,6 +73,7 @@ export class ColumnContainer {
   afterInserted() {
     this.addPromiseSearchField();
     this.subscribeCellClickEvent();
+    this.subscribeRowResizeEvent();
   }
 
   addPromiseSearchField() {
@@ -95,6 +123,19 @@ export class ColumnContainer {
         firstElementChild.readOnly = true;
       })
     })
+  }
+
+  subscribeRowResizeEvent() {
+    const columnEl = document.querySelector(`#${this.columnName}`);
+    const resizeBorderEl = columnEl.querySelector(`.resize-border`);
+
+    resizeBorderEl.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      ColumnContainer.$selectedResizeColumn = {
+        el: columnEl,
+        index: this.columnIndex
+      };
+    });
   }
 
 }

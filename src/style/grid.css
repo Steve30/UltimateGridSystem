@@ -145,7 +145,13 @@ input {
 #grid-container {
   display: grid;
   grid-template-areas: "column column column";
-  grid-template-columns: auto;
+  border: solid 1px #000;
+  border-right: unset;
+  position: relative;
+  top: 10px;
+  width: 90%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 #grid-container .column label {
@@ -157,4 +163,19 @@ input {
   grid-template-areas: "title cell-border" ". cell-border" "cell-0 cell-border" "cell-1 cell-border" "cell-2 cell-border";
   grid-template-columns: auto 1px;
   grid-template-rows: auto 18px repeat(3, auto);
+}
+
+#grid-container .column strong {
+  border-bottom: solid 1px #000;
+  box-sizing: border-box;
+}
+
+#grid-container .column label {
+  border-top: solid 1px #000;
+  box-sizing: border-box;
+}
+
+#grid-container .column .resize-border {
+  background: #000;
+  cursor: col-resize;
 }

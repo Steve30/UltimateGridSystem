@@ -30,12 +30,33 @@ export class TableContainer {
     this.defaultRows = this.rows.slice(0);
 
     this.renderColumns();
+
+    this.gridContainer.addEventListener("mousemove", this.mouseMoveEvent.bind(this));
+    this.gridContainer.addEventListener("mouseup", () => {
+      delete ColumnContainer.$selectedResizeColumn;
+    })
+  }
+
+  mouseMoveEvent(event) {
+    const { buttons, layerX} = event;
+    if (buttons === 1 && ColumnContainer.$selectedResizeColumn) {
+      console.log(layerX);
+
+      const { el: { clientWidth }, index } = ColumnContainer.$selectedResizeColumn;
+
+      console.log(clientWidth, layerX);
+
+      ColumnContainer.setCurrentTemplateColumn(index, layerX);
+
+      this.setGridTemplateColumnsStyle();
+    }
   }
 
   renderColumns(isRefresh = false) {
 
     const gridDataMap = new Map();
     ColumnContainer.$allSearchFieldPromise = null;
+    ColumnContainer.resetTemplateColumnsStyle();
 
     this.rows.forEach((item) => {
       for (const [name, value] of Object.entries(item)) {
@@ -72,6 +93,12 @@ export class TableContainer {
     };
 
     this.subscribeSearchPromise();
+    this.setGridTemplateColumnsStyle();
+  }
+
+  setGridTemplateColumnsStyle() {
+    const templateColumns = ColumnContainer.$templateColumnsStyle.join(" ");
+    this.gridContainer.style.gridTemplateColumns = templateColumns;
   }
 
   subscribeSearchPromise() {
