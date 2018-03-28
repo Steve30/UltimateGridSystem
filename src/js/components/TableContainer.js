@@ -4,10 +4,11 @@ import { ColumnContainer } from "./ColumnContainer.js";
 
 export class TableContainer {
   constructor() {
+    this.layout = document.querySelector("#layout");
     this.container = document.querySelector("#grid-template");
     const clone = document.importNode(this.container.content, true);
 
-    document.body.appendChild(clone);
+    this.layout.appendChild(clone);
 
     this.createProxyTable();
 
