@@ -161,6 +161,8 @@ export class TableContainer {
 
     };
 
+    ColumnContainer.newRowChange = DataEvent.newRowChangeProxy();
+
     this.subscribeSearchPromise();
     this.setGridTemplateColumnsStyle();
   }

@@ -20,6 +20,10 @@ export class LeadColumnContainer extends ColumnContainer {
     const cellTemplates = Array.from(set).map(({ value }, index) => `<a href="" class="row-number cell-row" data-id="${value}" style="grid-area: cell-${index}"
     ></a>`).join("");
 
+    ColumnContainer.existRowChanges = Array.from(set).map(({value}) => {
+      return {rowId: value}
+    });
+
     this.container.innerHTML = `<div id="${columnName}" class="column">
       <strong>&nbsp;</strong>
       ${searchButton}

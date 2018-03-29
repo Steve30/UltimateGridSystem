@@ -19,5 +19,8 @@
   "devDependencies": {
     "browser-sync": "^2.23.6",
     "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "npm": "^5.8.0"
   }
 }

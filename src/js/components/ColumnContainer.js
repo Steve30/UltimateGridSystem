@@ -56,23 +56,6 @@ export class ColumnContainer {
   render(columnName, columnConfig) {
     const { isSearch, isAddRow, set, searchValue } = columnConfig;
 
-    this.newRowChange = DataEvent.newRowChangeProxy();
-
-    console.log(this.newRowChange);
-
-    if (!this.newRowChange) {
-
-      this.newRowChange = {
-        [columnName]: null
-      }
-      ColumnContainer.existRowChanges = {
-        [columnName]: null
-      }
-    } else {
-      this.newRowChange[columnName] = null;
-      ColumnContainer.existRowChanges[columnName] = null;
-    }
-
     const searchTemplate = isSearch ? `<label class="searchfield-label search-row">
       <input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}'/>
     </label>` : "";
@@ -82,7 +65,7 @@ export class ColumnContainer {
     </label>` : "";
 
     const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
-      <input type="text" value="${value}" readonly/>
+      <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
     </label>`).join("");
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
@@ -151,8 +134,23 @@ export class ColumnContainer {
   }
 
   subscribeCellClickEvent() {
+
+    this.existRowChanges = DataEvent.existRowChangeProxy();
+
     const labels = this.columnEl.querySelectorAll(`.cell-label`);
-    const addInputs = this.columnEl.querySelectorAll(`.add-row-label input`);
+    const addInput = this.columnEl.querySelector(`.add-row-label input`);
+
+    if (!ColumnContainer.newRowChanges) {
+      ColumnContainer.newRowChanges = {
+        [this.columnName]: null
+      }
+    } else {
+      ColumnContainer.newRowChanges[this.columnName] = null;
+    }
+
+    addInput.addEventListener("change", ({target: {value}})=> {
+      ColumnContainer.newRowChange[this.columnName] = value;
+    })
 
     labels.forEach((element) => {
       const { firstElementChild } = element;
@@ -161,7 +159,13 @@ export class ColumnContainer {
         event.preventDefault();
         event.stopPropagation();
 
-        const { readOnly } = firstElementChild;
+        const { readOnly, name, value } = firstElementChild;
+
+        const splitted = name.split("-");
+
+        this.existRowChanges[splitted[1]] = {
+          [this.columnName]: value
+        };
 
         if (readOnly) {
           firstElementChild.removeAttribute("readonly");
@@ -173,18 +177,19 @@ export class ColumnContainer {
         firstElementChild.readOnly = true;
       })
 
-      firstElementChild.addEventListener("change", ({target: {value}}) => {
-        ColumnContainer.existRowChanges[this.columnName] = value;
+      firstElementChild.addEventListener("change", ({target: {value, name}}) => {
+
+        const splitted = name.split("-");
+
+        this.existRowChanges[splitted[1]] = {
+          [this.columnName]: value
+        };
+
         firstElementChild.readOnly = true;
       })
     })
 
-    addInputs.forEach(element => {
-      element.addEventListener("change", (({ target: { value } }) => {
-        console.log(value);
-        this.newRowChange[this.columnName] = value;
-      }))
-    })
+
   }
 
   subscribeRowResizeEvent() {
