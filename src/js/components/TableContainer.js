@@ -2,8 +2,20 @@ import { ColumnContainer } from "./ColumnContainer.js";
 
 "use strict";
 
+const defaultConfig = {
+  isSearchRow: false,
+  isAddRow: false
+}
+
 export class TableContainer {
-  constructor() {
+  constructor(config = defaultConfig) {
+    const { isSearchRow, isAddRow } = config;
+
+    this.setRowData();
+
+    this.columnTemplateAreas = this.rows.map(() => "column").join(" ");
+
+    this.gridContainerClassSet = new Set();
     this.layout = document.querySelector("#layout");
     this.container = document.querySelector("#grid-template");
     const clone = document.importNode(this.container.content, true);
@@ -11,9 +23,29 @@ export class TableContainer {
     this.layout.appendChild(clone);
 
     this.createProxyTable();
+    this.setColumnTemplateAreas();
+
+    if (isSearchRow) {
+      this.gridContainerClassSet.add("on-search");
+    }
+
+    if (isAddRow) {
+      this.gridContainerClassSet.add("on-add-row");
+    }
+
+    this.gridContainer.classList.add(...this.gridContainerClassSet.values());
 
     this.searchedColumns = [];
 
+    this.renderColumns();
+
+    this.gridContainer.addEventListener("mousemove", this.mouseMoveEvent.bind(this));
+    this.gridContainer.addEventListener("mouseup", () => {
+      delete ColumnContainer.$selectedResizeColumn;
+    })
+  }
+
+  setRowData() {
     this.rows = [{
       names: "István",
       sexes: "Férfi",
@@ -29,13 +61,10 @@ export class TableContainer {
       }];
 
     this.defaultRows = this.rows.slice(0);
+  }
 
-    this.renderColumns();
-
-    this.gridContainer.addEventListener("mousemove", this.mouseMoveEvent.bind(this));
-    this.gridContainer.addEventListener("mouseup", () => {
-      delete ColumnContainer.$selectedResizeColumn;
-    })
+  setColumnTemplateAreas() {
+    this.gridContainer.style.setProperty("--column-template-areas", `"${this.columnTemplateAreas}"`);
   }
 
   mouseMoveEvent(event) {
@@ -74,6 +103,7 @@ export class TableContainer {
         } else {
           gridDataMap.set(name, {
             isSearch: true,
+            isAddRow: true,
             searchValue: existSearchedColumns ? existSearchedColumns[name] : null,
             set: new Set([{value}])
           });

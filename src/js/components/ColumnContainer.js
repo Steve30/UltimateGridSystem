@@ -39,20 +39,30 @@ export class ColumnContainer {
   constructor(columnName, columnConfig) {
     this.container = document.querySelector("#column-template").cloneNode();
     this.columnName = columnName;
-    const { isSearch, set, searchValue } = columnConfig;
+    const { isSearch, isAddRow, set, searchValue } = columnConfig;
 
     ColumnContainer.$templateColumnsStyle = "auto";
     this.columnIndex = ColumnContainer.$templateColumnsStyle.length - 1;
+    this.sumOfCells = set.size;
 
-    const searchTemplate = isSearch ? `<input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}'/>` : "";
+    this.setCellTemplateAreas();
 
-    const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}">
+    const searchTemplate = isSearch ? `<label class="searchfield-label">
+      <input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}'/>
+    </label>` : "";
+
+    const addRowTemplate = isAddRow ? `<label class="add-row-label">
+      <input type="text" class="add-row" name='addrow-${columnName}' placeholder="Create ${columnName}"/>
+    </label>` : "";
+
+    const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}" class="cell-label">
       <input type="text" value="${value}" readonly/>
     </label>`).join("");
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
       <strong>${columnName}</strong>
       ${searchTemplate}
+      ${addRowTemplate}
       ${cellTemplates}
       <a href="" class="resize-border" style="grid-area: cell-border"></a>
     </div>`;
@@ -66,11 +76,26 @@ export class ColumnContainer {
     this.templateColumnsStyle[index] = `${value}px`;
   }
 
+  setCellTemplateAreas() {
+    const cellTemplateAreas = [];
+
+    for (let i = 0; i < this.sumOfCells; i++) {
+      cellTemplateAreas.push(`"cell-${i} cell-border"`);
+    }
+
+    this.cellTemplateAreas = cellTemplateAreas.join(" ");
+  }
+
   cloneContent() {
     return document.importNode(this.container.content, true);
   }
 
   afterInserted() {
+    this.columnEl = document.querySelector(`#${this.columnName}`);
+
+    this.columnEl.style.setProperty("--cell-template-areas", this.cellTemplateAreas);
+    this.columnEl.style.setProperty("--sum-of-cell", this.sumOfCells);
+
     this.addPromiseSearchField();
     this.subscribeCellClickEvent();
     this.subscribeRowResizeEvent();
@@ -97,7 +122,7 @@ export class ColumnContainer {
   }
 
   subscribeCellClickEvent() {
-    const labels = document.querySelectorAll(`#${this.columnName} label`);
+    const labels = this.columnEl.querySelectorAll(`.cell-label`);
 
     labels.forEach((element) => {
       const { firstElementChild } = element;
@@ -126,13 +151,12 @@ export class ColumnContainer {
   }
 
   subscribeRowResizeEvent() {
-    const columnEl = document.querySelector(`#${this.columnName}`);
-    const resizeBorderEl = columnEl.querySelector(`.resize-border`);
+    const resizeBorderEl = this.columnEl.querySelector(`.resize-border`);
 
     resizeBorderEl.addEventListener("mousedown", (event) => {
       event.preventDefault();
       ColumnContainer.$selectedResizeColumn = {
-        el: columnEl,
+        el: this.columnEl,
         index: this.columnIndex
       };
     });

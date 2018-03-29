@@ -143,6 +143,12 @@ input {
   width: 100%;
 }
 
+:root {
+  --sum-of-cell: 0;
+  --cell-template-areas: "";
+  --column-template-areas: "column";
+}
+
 #layout {
   position: relative;
   top: 10px;
@@ -153,22 +159,31 @@ input {
 
 #grid-container {
   display: grid;
-  grid-template-areas: "column column column";
+  grid-template-areas: var(--column-template-areas);
   border: solid 1px #000;
   border-right: unset;
+  border-bottom: unset;
   position: relative;
   box-sizing: border-box;
 }
 
-#grid-container .column label {
-  cursor: pointer;
-}
-
 #grid-container .column {
   display: grid;
-  grid-template-areas: "title cell-border" ". cell-border" "cell-0 cell-border" "cell-1 cell-border" "cell-2 cell-border";
+  grid-template-areas: "title cell-border" ". cell-border" ". cell-border" var(--cell-template-areas);
   grid-template-columns: auto 1px;
-  grid-template-rows: auto 18px repeat(3, auto);
+  grid-template-rows: auto 0 0 repeat(var(--sum-of-cell), auto);
+}
+
+#grid-container.on-search .column {
+  grid-template-rows: auto auto 0 repeat(var(--sum-of-cell), auto);
+}
+
+#grid-container.on-add-row .column {
+  grid-template-rows: auto 0 auto repeat(var(--sum-of-cell), auto);
+}
+
+#grid-container.on-search.on-add-row .column {
+  grid-template-rows: auto auto auto repeat(var(--sum-of-cell), auto);
 }
 
 #grid-container .column strong {
@@ -178,9 +193,21 @@ input {
 }
 
 #grid-container .column label {
-  border-top: solid 1px #000;
+  cursor: pointer;
   box-sizing: border-box;
   display: flex;
+}
+
+#grid-container .column .searchfield-label {
+  border-bottom: solid 1px #000;
+}
+
+#grid-container .column .add-row-label {
+  border-bottom: solid 1px #000;
+}
+
+#grid-container .column .cell-label {
+  border-bottom: solid 1px #000;
 }
 
 #grid-container .column .resize-border {
