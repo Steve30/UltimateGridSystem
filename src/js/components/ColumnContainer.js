@@ -1,3 +1,5 @@
+import { DataEvent } from "../events/dataEvent.js";
+
 "use strict";
 
 export class ColumnContainer {
@@ -39,23 +41,47 @@ export class ColumnContainer {
   constructor(columnName, columnConfig) {
     this.container = document.querySelector("#column-template").cloneNode();
     this.columnName = columnName;
-    const { isSearch, isAddRow, set, searchValue } = columnConfig;
 
-    ColumnContainer.$templateColumnsStyle = "auto";
-    this.columnIndex = ColumnContainer.$templateColumnsStyle.length - 1;
+    const { width, set } = columnConfig;
+
+    ColumnContainer.$templateColumnsStyle = !width ? "auto" : width;
+
     this.sumOfCells = set.size;
-
     this.setCellTemplateAreas();
 
-    const searchTemplate = isSearch ? `<label class="searchfield-label">
+    this.columnIndex = ColumnContainer.$templateColumnsStyle.length - 1;
+    this.render(columnName, columnConfig);
+  }
+
+  render(columnName, columnConfig) {
+    const { isSearch, isAddRow, set, searchValue } = columnConfig;
+
+    this.newRowChange = DataEvent.newRowChangeProxy();
+
+    console.log(this.newRowChange);
+
+    if (!this.newRowChange) {
+
+      this.newRowChange = {
+        [columnName]: null
+      }
+      ColumnContainer.existRowChanges = {
+        [columnName]: null
+      }
+    } else {
+      this.newRowChange[columnName] = null;
+      ColumnContainer.existRowChanges[columnName] = null;
+    }
+
+    const searchTemplate = isSearch ? `<label class="searchfield-label search-row">
       <input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}'/>
     </label>` : "";
 
-    const addRowTemplate = isAddRow ? `<label class="add-row-label">
+    const addRowTemplate = isAddRow ? `<label class="add-row-label add-row">
       <input type="text" class="add-row" name='addrow-${columnName}' placeholder="Create ${columnName}"/>
     </label>` : "";
 
-    const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}" class="cell-label">
+    const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
       <input type="text" value="${value}" readonly/>
     </label>`).join("");
 
@@ -91,14 +117,17 @@ export class ColumnContainer {
   }
 
   afterInserted() {
+    this.setCssVariable();
+    this.addPromiseSearchField();
+    this.subscribeCellClickEvent();
+    this.subscribeRowResizeEvent();
+  }
+
+  setCssVariable() {
     this.columnEl = document.querySelector(`#${this.columnName}`);
 
     this.columnEl.style.setProperty("--cell-template-areas", this.cellTemplateAreas);
     this.columnEl.style.setProperty("--sum-of-cell", this.sumOfCells);
-
-    this.addPromiseSearchField();
-    this.subscribeCellClickEvent();
-    this.subscribeRowResizeEvent();
   }
 
   addPromiseSearchField() {
@@ -123,6 +152,7 @@ export class ColumnContainer {
 
   subscribeCellClickEvent() {
     const labels = this.columnEl.querySelectorAll(`.cell-label`);
+    const addInputs = this.columnEl.querySelectorAll(`.add-row-label input`);
 
     labels.forEach((element) => {
       const { firstElementChild } = element;
@@ -144,9 +174,16 @@ export class ColumnContainer {
       })
 
       firstElementChild.addEventListener("change", ({target: {value}}) => {
-        console.log(value);
+        ColumnContainer.existRowChanges[this.columnName] = value;
         firstElementChild.readOnly = true;
       })
+    })
+
+    addInputs.forEach(element => {
+      element.addEventListener("change", (({ target: { value } }) => {
+        console.log(value);
+        this.newRowChange[this.columnName] = value;
+      }))
     })
   }
 

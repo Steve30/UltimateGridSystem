@@ -1,4 +1,9 @@
-import { ColumnContainer } from "./ColumnContainer.js";
+import {
+  ColumnContainer
+} from "./ColumnContainer.js";
+import { LeadColumnContainer } from "./LeadColumnContainer.js";
+import { SearchEvent } from "../events/searchEvent.js";
+import { DataEvent } from "../events/dataEvent.js";
 
 "use strict";
 
@@ -7,9 +12,17 @@ const defaultConfig = {
   isAddRow: false
 }
 
+const leadColumnIdentity = "id";
+
 export class TableContainer {
   constructor(config = defaultConfig) {
-    const { isSearchRow, isAddRow } = config;
+    const {
+      isSearchRow,
+      isAddRow
+    } = config;
+
+    this.searchEvent = new SearchEvent(this);
+    this.dataEvent = new DataEvent();
 
     this.setRowData();
 
@@ -47,18 +60,21 @@ export class TableContainer {
 
   setRowData() {
     this.rows = [{
+      [leadColumnIdentity]: 1,
       names: "István",
       sexes: "Férfi",
       adults: true
     }, {
+      [leadColumnIdentity]: 2,
       names: "Zsófia",
       sexes: "Lány",
       adults: false
     }, {
+      [leadColumnIdentity]: 3,
       names: "Viktóra",
       sexes: "Nő",
       adults: true
-      }];
+    }];
 
     this.defaultRows = this.rows.slice(0);
   }
@@ -68,11 +84,19 @@ export class TableContainer {
   }
 
   mouseMoveEvent(event) {
-    const { buttons, layerX} = event;
+    const {
+      buttons,
+      layerX
+    } = event;
     if (buttons === 1 && ColumnContainer.$selectedResizeColumn) {
       console.log(layerX);
 
-      const { el: { clientWidth }, index } = ColumnContainer.$selectedResizeColumn;
+      const {
+        el: {
+          clientWidth
+        },
+        index
+      } = ColumnContainer.$selectedResizeColumn;
 
       console.log(clientWidth, layerX);
 
@@ -99,13 +123,17 @@ export class TableContainer {
             dataConfig.searchValue = existSearchedColumns[name];
           }
 
-          dataConfig.set.add({value});
+          dataConfig.set.add({
+            value
+          });
         } else {
           gridDataMap.set(name, {
             isSearch: true,
             isAddRow: true,
             searchValue: existSearchedColumns ? existSearchedColumns[name] : null,
-            set: new Set([{value}])
+            set: new Set([{
+              value
+            }])
           });
         }
       }
@@ -115,12 +143,22 @@ export class TableContainer {
       this.gridContainer.innerHTML = "";
     }
 
+    const leadColumn = gridDataMap.get(leadColumnIdentity);
+
+    if (leadColumn) {
+      const leadContainer = new LeadColumnContainer(leadColumn);
+      this.gridContainer.appendChild(leadContainer.cloneContent());
+      leadContainer.afterInserted();
+    }
+
     for (const [columnName, columnConfig] of gridDataMap) {
-      const columnContainer = new ColumnContainer(columnName, columnConfig);
 
-      this.gridContainer.appendChild(columnContainer.cloneContent());
+      if (columnName !== leadColumnIdentity) {
+        const columnContainer = new ColumnContainer(columnName, columnConfig);
+        this.gridContainer.appendChild(columnContainer.cloneContent());
+        columnContainer.afterInserted();
+      }
 
-      columnContainer.afterInserted();
     };
 
     this.subscribeSearchPromise();
@@ -133,35 +171,11 @@ export class TableContainer {
   }
 
   subscribeSearchPromise() {
-    if (ColumnContainer.$allSearchFieldPromise.length > 0) {
-      Promise.race(ColumnContainer.$allSearchFieldPromise).then(search => {
-        const { columnName, searchValue } = search;
-        let isSearchInDefaultRows = true;
-
-        let find = this.searchedColumns.find(item => item && item[columnName]);
-
-        if (this.searchedColumns.length > 0) {
-          this.searchedColumns.forEach(searchColumn => {
-            for (const [column, value] of Object.entries(searchColumn)) {
-              if (column !== columnName) {
-                this.rows = this.getFilteredRows(column, value);
-                isSearchInDefaultRows = false;
-              }
-            }
-          })
-        }
-
-        this.rows = this.getFilteredRows(columnName, searchValue, isSearchInDefaultRows);
-
-        if (find) {
-          find[columnName] = searchValue;
-        } else {
-          this.searchedColumns.push({ [columnName]: searchValue });
-        }
-
-        this.renderColumns(true);
-      })
-    }
+    this.searchEvent.searchPromise().then(isSearch => {
+      if (isSearch) {
+        this.renderColumns(isSearch);
+      }
+    })
   }
 
   getFilteredRows(column, value, isSearchInDefaultRows = true) {
