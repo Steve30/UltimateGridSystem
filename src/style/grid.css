@@ -214,6 +214,10 @@ input {
   background: #ccc;
 }
 
+#grid-container #lead.column {
+  counter-reset: row-counter;
+}
+
 #grid-container #lead.column a {
   text-decoration: unset;
   color: #000;
@@ -240,8 +244,11 @@ input {
   display: flex;
 }
 
+
+
 #grid-container .column .row-number:before {
-  content: attr(data-id);
+  counter-increment: row-counter;
+  content: counter(row-counter);
 }
 
 #grid-container .column .resize-border,

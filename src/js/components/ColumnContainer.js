@@ -1,4 +1,4 @@
-import { DataEvent } from "../events/dataEvent.js";
+import { DataAdapter } from "../adapters/dataAdapter.js";
 
 "use strict";
 
@@ -135,7 +135,7 @@ export class ColumnContainer {
 
   subscribeCellClickEvent() {
 
-    this.existRowChanges = DataEvent.existRowChangeProxy();
+    this.existRowChanges = DataAdapter.existRowChangeProxy();
 
     const labels = this.columnEl.querySelectorAll(`.cell-label`);
     const addInput = this.columnEl.querySelector(`.add-row-label input`);

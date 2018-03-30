@@ -3,16 +3,10 @@ import {
 } from "./ColumnContainer.js";
 import { LeadColumnContainer } from "./LeadColumnContainer.js";
 import { SearchEvent } from "../events/searchEvent.js";
-import { DataEvent } from "../events/dataEvent.js";
+import { DataAdapter } from "../adapters/dataAdapter.js";
+import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
 
 "use strict";
-
-const defaultConfig = {
-  isSearchRow: false,
-  isAddRow: false
-}
-
-const leadColumnIdentity = "id";
 
 export class TableContainer {
   constructor(config = defaultConfig) {
@@ -22,11 +16,9 @@ export class TableContainer {
     } = config;
 
     this.searchEvent = new SearchEvent(this);
-    this.dataEvent = new DataEvent();
+    this.dataAdapter = new DataAdapter();
 
-    this.setRowData();
-
-    this.columnTemplateAreas = this.rows.map(() => "column").join(" ");
+    this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
 
     this.gridContainerClassSet = new Set();
     this.layout = document.querySelector("#layout");
@@ -56,27 +48,10 @@ export class TableContainer {
     this.gridContainer.addEventListener("mouseup", () => {
       delete ColumnContainer.$selectedResizeColumn;
     })
-  }
 
-  setRowData() {
-    this.rows = [{
-      [leadColumnIdentity]: 1,
-      names: "István",
-      sexes: "Férfi",
-      adults: true
-    }, {
-      [leadColumnIdentity]: 2,
-      names: "Zsófia",
-      sexes: "Lány",
-      adults: false
-    }, {
-      [leadColumnIdentity]: 3,
-      names: "Viktóra",
-      sexes: "Nő",
-      adults: true
-    }];
-
-    this.defaultRows = this.rows.slice(0);
+    this.dataAdapter.addNewRowPromise().then(() => {
+      this.renderColumns(true);
+    });
   }
 
   setColumnTemplateAreas() {
@@ -108,36 +83,10 @@ export class TableContainer {
 
   renderColumns(isRefresh = false) {
 
-    const gridDataMap = new Map();
     ColumnContainer.$allSearchFieldPromise = null;
     ColumnContainer.resetTemplateColumnsStyle();
 
-    this.rows.forEach((item) => {
-      for (const [name, value] of Object.entries(item)) {
-        const dataConfig = gridDataMap.get(name);
-        const existSearchedColumns = this.searchedColumns.find(item => item && item[name]);
-
-        if (dataConfig) {
-
-          if (existSearchedColumns) {
-            dataConfig.searchValue = existSearchedColumns[name];
-          }
-
-          dataConfig.set.add({
-            value
-          });
-        } else {
-          gridDataMap.set(name, {
-            isSearch: true,
-            isAddRow: true,
-            searchValue: existSearchedColumns ? existSearchedColumns[name] : null,
-            set: new Set([{
-              value
-            }])
-          });
-        }
-      }
-    })
+    const gridDataMap = this.dataAdapter.getDataMap(this.searchedColumns);
 
     if (isRefresh) {
       this.gridContainer.innerHTML = "";
@@ -161,7 +110,7 @@ export class TableContainer {
 
     };
 
-    ColumnContainer.newRowChange = DataEvent.newRowChangeProxy();
+    ColumnContainer.newRowChange = DataAdapter.newRowChangeProxy();
 
     this.subscribeSearchPromise();
     this.setGridTemplateColumnsStyle();
@@ -181,7 +130,7 @@ export class TableContainer {
   }
 
   getFilteredRows(column, value, isSearchInDefaultRows = true) {
-    const rows = isSearchInDefaultRows ? this.defaultRows : this.rows;
+    const rows = isSearchInDefaultRows ? this.dataAdapter.defaultRows : this.dataAdapter.rows;
     return rows.filter((item) => item[column].toLowerCase().includes(value));
   }
 
