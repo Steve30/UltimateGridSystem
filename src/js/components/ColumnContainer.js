@@ -54,7 +54,9 @@ export class ColumnContainer {
   }
 
   render(columnName, columnConfig) {
-    const { isSearch, isAddRow, set, searchValue } = columnConfig;
+    const { isSearch, isAddRow, set, searchValue, dragAndDropColumn } = columnConfig;
+
+    this.dragAndDropColumn = dragAndDropColumn;
 
     const searchTemplate = isSearch ? `<label class="searchfield-label search-row">
       <input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}'/>
@@ -104,11 +106,16 @@ export class ColumnContainer {
     this.addPromiseSearchField();
     this.subscribeCellClickEvent();
     this.subscribeRowResizeEvent();
+
+    if (this.dragAndDropColumn) {
+      this.setDragAndDropAction();
+    }
   }
 
   setCssVariable() {
     this.columnEl = document.querySelector(`#${this.columnName}`);
 
+    this.columnEl.style.gridArea = this.columnName !== "lead" ? this.columnName : "id";
     this.columnEl.style.setProperty("--cell-template-areas", this.cellTemplateAreas);
     this.columnEl.style.setProperty("--sum-of-cell", this.sumOfCells);
   }
@@ -202,6 +209,35 @@ export class ColumnContainer {
         index: this.columnIndex
       };
     });
+  }
+
+  setDragAndDropAction() {
+    this.columnEl.draggable = true;
+
+    this.columnEl.addEventListener("dragstart", (event) => {
+      const {target: {id}} = event;
+
+      event.dataTransfer.setData("text", id);
+      event.dataTransfer.effectAllowed = "move";
+    })
+
+    this.columnEl.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+    })
+
+    this.columnEl.addEventListener("drop", (event) => {
+      event.preventDefault();
+
+      const {currentTarget: {id}} = event;
+
+      document.dispatchEvent(new CustomEvent("dropColumn", {
+        detail: {
+          dragged: event.dataTransfer.getData("text"),
+          dropped: id
+        }
+      }))
+    })
   }
 
 }

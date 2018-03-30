@@ -12,11 +12,13 @@ export class TableContainer {
   constructor(config = defaultConfig) {
     const {
       isSearchRow,
-      isAddRow
+      isAddRow,
+      dragAndDropColumn
     } = config;
 
     this.searchEvent = new SearchEvent(this);
     this.dataAdapter = new DataAdapter();
+    this.dragAndDropColumn = dragAndDropColumn;
 
     this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
 
@@ -52,6 +54,19 @@ export class TableContainer {
     this.dataAdapter.addNewRowPromise().then(() => {
       this.renderColumns(true);
     });
+
+    document.addEventListener("dropColumn", ({detail: {dragged, dropped}}) => {
+      const dragIndex = columnConfigs.findIndex(({id}) => id === dragged);
+      const dropIndex = columnConfigs.findIndex(({id}) => id === dropped);
+      const dragObj = columnConfigs.find(({id}) => id === dragged);
+      const dropObj = columnConfigs.find(({id}) => id === dropped);
+
+      columnConfigs[dropIndex] = dragObj;
+      columnConfigs[dragIndex] = dropObj;
+
+      this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
+      this.setColumnTemplateAreas();
+    })
   }
 
   setColumnTemplateAreas() {
@@ -103,6 +118,7 @@ export class TableContainer {
     for (const [columnName, columnConfig] of gridDataMap) {
 
       if (columnName !== leadColumnIdentity) {
+        columnConfig.dragAndDropColumn = this.dragAndDropColumn;
         const columnContainer = new ColumnContainer(columnName, columnConfig);
         this.gridContainer.appendChild(columnContainer.cloneContent());
         columnContainer.afterInserted();

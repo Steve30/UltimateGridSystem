@@ -2,7 +2,9 @@ export const leadColumnIdentity = "id";
 
 export const defaultConfig = {
   isSearchRow: false,
-  isAddRow: false
+  isAddRow: false,
+  dragAndDropColumn: false,
+  dragAndDropRow: false
 };
 
 export const columnConfigs = [{
