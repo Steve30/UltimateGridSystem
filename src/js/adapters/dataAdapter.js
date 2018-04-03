@@ -1,8 +1,6 @@
 import { ColumnContainer } from "../components/ColumnContainer.js";
 import { leadColumnIdentity } from "../gridConfig.js";
 
-"use strict";
-
 export class DataAdapter {
   constructor() {
     if (!DataAdapter.singleton) {

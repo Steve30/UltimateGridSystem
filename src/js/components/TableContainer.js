@@ -6,19 +6,19 @@ import { SearchEvent } from "../events/searchEvent.js";
 import { DataAdapter } from "../adapters/dataAdapter.js";
 import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
 
-"use strict";
-
 export class TableContainer {
   constructor(config = defaultConfig) {
     const {
       isSearchRow,
       isAddRow,
-      dragAndDropColumn
+      dragAndDropColumn,
+      isLeadColumnCheck
     } = config;
 
     this.searchEvent = new SearchEvent(this);
     this.dataAdapter = new DataAdapter();
     this.dragAndDropColumn = dragAndDropColumn;
+    this.isLeadColumnCheck = isLeadColumnCheck;
 
     this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
 
@@ -110,6 +110,11 @@ export class TableContainer {
     const leadColumn = gridDataMap.get(leadColumnIdentity);
 
     if (leadColumn) {
+
+      if (this.isLeadColumnCheck) {
+        leadColumn.isCheck = this.isLeadColumnCheck;
+      }
+
       const leadContainer = new LeadColumnContainer(leadColumn);
       this.gridContainer.appendChild(leadContainer.cloneContent());
       leadContainer.afterInserted();

@@ -5,5 +5,6 @@ import { TableContainer } from "./components/TableContainer.js";
 const tableContainer = new TableContainer({
   isSearchRow: true,
   isAddRow: true,
-  dragAndDropColumn: true
+  dragAndDropColumn: true,
+  isLeadColumnCheck: true
 });

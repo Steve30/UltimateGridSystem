@@ -1,7 +1,5 @@
 import { DataAdapter } from "../adapters/dataAdapter.js";
 
-"use strict";
-
 export class ColumnContainer {
 
   static set $allSearchFieldPromise(value) {

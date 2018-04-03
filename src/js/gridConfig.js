@@ -1,13 +1,14 @@
-export const leadColumnIdentity = "id";
+const leadColumnIdentity = "id";
 
-export const defaultConfig = {
+const defaultConfig = {
   isSearchRow: false,
   isAddRow: false,
   dragAndDropColumn: false,
-  dragAndDropRow: false
+  dragAndDropRow: false,
+  isLeadColumnCheck: false
 };
 
-export const columnConfigs = [{
+const columnConfigs = [{
   id: leadColumnIdentity,
   title: null
 }, {
@@ -19,4 +20,6 @@ export const columnConfigs = [{
 }, {
   id: "adults",
   title: "adults"
-}]
+  }];
+
+export {leadColumnIdentity, defaultConfig, columnConfigs };

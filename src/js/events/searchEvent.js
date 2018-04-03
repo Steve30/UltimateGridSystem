@@ -1,5 +1,3 @@
-"use strict";
-
 import {
   TableContainer
 } from "../components/TableContainer.js";

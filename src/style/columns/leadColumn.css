@@ -1,0 +1,45 @@
+#grid-container #lead {
+  counter-reset: row-counter;
+}
+
+#grid-container #lead a {
+  text-decoration: unset;
+  color: #000;
+  align-items: center;
+  justify-content: center;
+}
+
+#grid-container #lead .row-number:before {
+  counter-increment: row-counter;
+  content: counter(row-counter);
+}
+
+#grid-container #lead.check-column .title,
+#grid-container #lead.check-column .row-number {
+  align-items: center;
+  padding: 0;
+}
+
+#grid-container #lead.check-column .fa {
+  border: solid 1px #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 60%;
+}
+#grid-container #lead.check-column .fa.fa-check {
+  width: auto;
+  height: auto;
+}
+
+#grid-container #lead.check-column .fa-search,
+#grid-container #lead.check-column .fa-plus {
+  border: unset;
+  width: auto;
+  height: auto;
+}
+
+#grid-container #lead.check-column .row-number:before {
+  content: "";
+}
