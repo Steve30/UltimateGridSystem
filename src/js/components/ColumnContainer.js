@@ -1,5 +1,7 @@
 import { DataAdapter } from "../adapters/dataAdapter.js";
 
+import { default as defaultOrder} from "../orders/defaultOrder.js";
+
 export class ColumnContainer {
 
   static set $allSearchFieldPromise(value) {
@@ -40,7 +42,11 @@ export class ColumnContainer {
     this.container = document.querySelector("#column-template").cloneNode();
     this.columnName = columnName;
 
-    const { width, set } = columnConfig;
+    const { width, set, isOrder } = columnConfig;
+
+    if (isOrder) {
+      this.initOrderClass();
+    }
 
     ColumnContainer.$templateColumnsStyle = !width ? "auto" : width;
 
@@ -52,11 +58,11 @@ export class ColumnContainer {
   }
 
   render(columnName, columnConfig) {
-    const { isSearch, isAddRow, set, searchValue, dragAndDropColumn } = columnConfig;
+    const { isSearchRow, isAddRow, set, searchValue, dragAndDropColumn, title } = columnConfig;
 
     this.dragAndDropColumn = dragAndDropColumn;
 
-    const searchTemplate = isSearch ? `<label class="searchfield-label search-row">
+    const searchTemplate = isSearchRow ? `<label class="searchfield-label search-row">
       <input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}'/>
     </label>` : "";
 
@@ -69,12 +75,16 @@ export class ColumnContainer {
     </label>`).join("");
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
-      <strong>${columnName}</strong>
+      <a href="" class="title">${title}${this.order ? this.order.getTemplate() : ""}</a>
       ${searchTemplate}
       ${addRowTemplate}
       ${cellTemplates}
       <a href="" class="resize-border" style="grid-area: cell-border"></a>
     </div>`;
+  }
+
+  initOrderClass() {
+    this.order = new defaultOrder(this.columnName);
   }
 
   static resetTemplateColumnsStyle() {
@@ -108,6 +118,17 @@ export class ColumnContainer {
     if (this.dragAndDropColumn) {
       this.setDragAndDropAction();
     }
+
+    this.columnEl.querySelector(".title").addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const { target } = event;
+
+      if (target.classList.contains("sort")) {
+        this.order.sortAction(target);
+      }
+    })
   }
 
   setCssVariable() {

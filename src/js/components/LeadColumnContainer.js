@@ -9,11 +9,11 @@ export class LeadColumnContainer extends ColumnContainer {
   }
 
   render(columnName, columnConfig) {
-    const { isSearch, isAddRow, set, isCheck } = columnConfig;
+    const { isSearchRow, isAddRow, set, isCheck } = columnConfig;
 
     const checkTemplate = isCheck ? `<span class="check-holder"><i class="fa fa-check"></i></span>` : "";
 
-    const searchButton = isSearch ? `<a href="" class="search-button search-row"><i class="fa fa-search"></i></a>` : "";
+    const searchButton = isSearchRow ? `<a href="" class="search-button search-row"><i class="fa fa-search"></i></a>` : "";
 
     const addButton = isAddRow ? `<a href="" class="add-button add-row"><i class="fa fa-plus"></i></a>` : "";
 

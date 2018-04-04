@@ -1,7 +1,21 @@
-import { ColumnContainer } from "../components/ColumnContainer.js";
-import { leadColumnIdentity } from "../gridConfig.js";
+import {
+  ColumnContainer
+} from "../components/ColumnContainer.js";
+import {
+  leadColumnIdentity,
+  columnConfigs
+} from "../gridConfig.js";
 
 export class DataAdapter {
+
+  static set $defaultRows(rows) {
+    this.defaultRows = rows;
+  }
+
+  static get $defaultRows() {
+    return this.defaultRows;
+  }
+
   constructor() {
     if (!DataAdapter.singleton) {
       DataAdapter.singleton = this;
@@ -25,12 +39,15 @@ export class DataAdapter {
     }];
 
     this.defaultRows = this.rows.slice(0);
+    DataAdapter.$defaultRows = this.defaultRows;
   }
 
   addNewRowPromise() {
     return new Promise(resolve => {
       document.addEventListener("addButtonClicked", () => {
-        const {getValidNewRow} = ColumnContainer.newRowChange;
+        const {
+          getValidNewRow
+        } = ColumnContainer.newRowChange;
         const newRowId = this.rows.length + 1;
 
         let newRowObj = {
@@ -65,14 +82,16 @@ export class DataAdapter {
             value
           });
         } else {
-          dataMap.set(name, {
-            isSearch: true,
-            isAddRow: true,
+          const columnConfig = columnConfigs.find(item => item.id === name);
+
+          Object.assign(columnConfig, {
             searchValue: existSearchedColumns ? existSearchedColumns[name] : null,
             set: new Set([{
               value
             }])
-          });
+          })
+
+          dataMap.set(name, columnConfig);
         }
       }
     })
@@ -81,7 +100,9 @@ export class DataAdapter {
   }
 
   static newRowChangeProxy() {
-    const {singleton} = this;
+    const {
+      singleton
+    } = this;
 
     return new Proxy(ColumnContainer.newRowChanges, {
       set(target, properties, value) {
@@ -98,7 +119,9 @@ export class DataAdapter {
   }
 
   static existRowChangeProxy() {
-    const {singleton} = this;
+    const {
+      singleton
+    } = this;
 
     return new Proxy(ColumnContainer.existRowChanges, {
       set(target, properties, column) {

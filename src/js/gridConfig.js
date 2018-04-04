@@ -10,16 +10,31 @@ const defaultConfig = {
 
 const columnConfigs = [{
   id: leadColumnIdentity,
-  title: null
+  title: null,
+  isAddRow: true,
+  isSearchRow: true
 }, {
   id: "names",
-  title: "names"
+  title: "Names",
+  isAddRow: true,
+  isSearchRow: true,
+  isOrder: true
 }, {
   id: "sexes",
-  title: "sexes"
+  title: "Sexes",
+  isAddRow: true,
+  isSearchRow: true,
+  isOrder: true
 }, {
   id: "adults",
-  title: "adults"
-  }];
+  title: "Adults",
+  isAddRow: true,
+  isSearchRow: true,
+  isOrder: true
+}];
 
-export {leadColumnIdentity, defaultConfig, columnConfigs };
+export {
+  leadColumnIdentity,
+  defaultConfig,
+  columnConfigs
+};

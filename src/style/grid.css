@@ -10,6 +10,11 @@ input {
   width: 100%;
 }
 
+a {
+  text-decoration: unset;
+  color: #000;
+}
+
 #layout {
   position: relative;
   top: 10px;
@@ -55,6 +60,7 @@ input {
   display: flex;
   align-items: center;
   padding: 0 5px;
+  justify-content: space-between;
 }
 
 #grid-container .column .search-row {
