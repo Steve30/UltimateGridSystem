@@ -51,10 +51,6 @@ export class TableContainer {
       delete ColumnContainer.$selectedResizeColumn;
     })
 
-    this.dataAdapter.addNewRowPromise().then(() => {
-      this.renderColumns(true);
-    });
-
     document.addEventListener("dropColumn", ({detail: {dragged, dropped}}) => {
       const dragIndex = columnConfigs.findIndex(({id}) => id === dragged);
       const dropIndex = columnConfigs.findIndex(({id}) => id === dropped);
@@ -135,6 +131,14 @@ export class TableContainer {
 
     this.subscribeSearchPromise();
     this.setGridTemplateColumnsStyle();
+
+    this.dataAdapter.addNewRowPromise().then(() => {
+      this.renderColumns(true);
+    });
+
+    this.dataAdapter.sortPromise().then(() => {
+      this.renderColumns(true);
+    })
   }
 
   setGridTemplateColumnsStyle() {

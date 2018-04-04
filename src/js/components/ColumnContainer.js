@@ -58,7 +58,7 @@ export class ColumnContainer {
   }
 
   render(columnName, columnConfig) {
-    const { isSearchRow, isAddRow, set, searchValue, dragAndDropColumn, title } = columnConfig;
+    const { isSearchRow, isAddRow, set, searchValue, dragAndDropColumn, title, sortClass } = columnConfig;
 
     this.dragAndDropColumn = dragAndDropColumn;
 
@@ -75,7 +75,7 @@ export class ColumnContainer {
     </label>`).join("");
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
-      <a href="" class="title">${title}${this.order ? this.order.getTemplate() : ""}</a>
+      <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
       ${searchTemplate}
       ${addRowTemplate}
       ${cellTemplates}

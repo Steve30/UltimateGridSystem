@@ -42,6 +42,17 @@ export class DataAdapter {
     DataAdapter.$defaultRows = this.defaultRows;
   }
 
+  sortPromise() {
+    return new Promise(resolve => {
+      document.addEventListener("sorted", ({ detail }) => {
+        this.sortedConfig = detail;
+        this.rows = DataAdapter.$defaultRows.slice(0);
+
+        resolve();
+      })
+    })
+  }
+
   addNewRowPromise() {
     return new Promise(resolve => {
       document.addEventListener("addButtonClicked", () => {
@@ -58,6 +69,7 @@ export class DataAdapter {
 
         this.rows.unshift(newRowObj);
         this.defaultRows = this.rows.slice(0);
+        DataAdapter.$defaultRows = this.defaultRows;
 
         resolve(true);
       })
@@ -84,6 +96,10 @@ export class DataAdapter {
         } else {
           const columnConfig = columnConfigs.find(item => item.id === name);
 
+          if (this.sortedConfig && this.sortedConfig.columnName === name) {
+            columnConfig.sortClass = this.sortedConfig.sortClass;
+          }
+
           Object.assign(columnConfig, {
             searchValue: existSearchedColumns ? existSearchedColumns[name] : null,
             set: new Set([{
@@ -94,7 +110,7 @@ export class DataAdapter {
           dataMap.set(name, columnConfig);
         }
       }
-    })
+    });
 
     return dataMap;
   }
