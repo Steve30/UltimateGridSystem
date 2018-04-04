@@ -11,7 +11,7 @@ export class LeadColumnContainer extends ColumnContainer {
   render(columnName, columnConfig) {
     const { isSearch, isAddRow, set, isCheck } = columnConfig;
 
-    const checkTemplate = isCheck ? `<i class="fa"></i>` : "";
+    const checkTemplate = isCheck ? `<span class="check-holder"><i class="fa fa-check"></i></span>` : "";
 
     const searchButton = isSearch ? `<a href="" class="search-button search-row"><i class="fa fa-search"></i></a>` : "";
 
@@ -42,7 +42,7 @@ export class LeadColumnContainer extends ColumnContainer {
   }
 
   subscribeColumnItemClick() {
-    const cellRowLength = this.columnEl.querySelectorAll(".cell-row");
+    const cellRowLength = this.columnEl.querySelectorAll(".cell-row").length;
     const titleRow = this.columnEl.querySelector(".title");
 
     this.columnEl.querySelectorAll("a").forEach((element) => {
@@ -51,8 +51,6 @@ export class LeadColumnContainer extends ColumnContainer {
         event.stopPropagation();
 
         const { currentTarget } = event;
-        const { firstChild } = currentTarget;
-
         const elementTypeByClassName = currentTarget.classList.item(0);
 
         switch (elementTypeByClassName) {
@@ -64,24 +62,23 @@ export class LeadColumnContainer extends ColumnContainer {
             break;
           case "title":
             if (this.isCheck) {
-              console.dir(firstChild);
-              firstChild.classList.toggle("fa-check");
+              currentTarget.classList.toggle("checked");
 
               this.columnEl.querySelectorAll(".cell-row").forEach(cellElement => {
-                cellElement.firstChild.classList.toggle("fa-check");
+                cellElement.classList.toggle("checked");
               })
             }
             break;
           case "row-number":
             if (this.isCheck) {
-              firstChild.classList.toggle("fa-check");
+              currentTarget.classList.toggle("checked");
 
-              const length = this.columnEl.querySelectorAll(".cell-row .fa-check").length;
+              const length = this.columnEl.querySelectorAll(".cell-row.checked").length;
 
               if (length === cellRowLength) {
-                titleRow.firstChild.classList.add("fa-check");
+                titleRow.classList.add("checked");
               } else {
-                titleRow.firstChild.classList.remove("fa-check");
+                titleRow.classList.remove("checked");
               }
 
             }

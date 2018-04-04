@@ -1,0 +1,8 @@
+:root {
+  --sum-of-cell: 0;
+  --cell-template-areas: "";
+  --column-template-areas: "column";
+  --grid-header-cell-height: 25px;
+  --grid-search-cell-height: 25px;
+  --grid-add-cell-height: 25px;
+}

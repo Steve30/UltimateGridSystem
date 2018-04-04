@@ -1,4 +1,5 @@
 @import "reset.css";
+@import "variables.css";
 @import "./columns/leadColumn.css";
 
 input {
@@ -7,15 +8,6 @@ input {
   border: 0;
   cursor: inherit;
   width: 100%;
-}
-
-:root {
-  --sum-of-cell: 0;
-  --cell-template-areas: "";
-  --column-template-areas: "column";
-  --grid-header-cell-height: 25px;
-  --grid-search-cell-height: 25px;
-  --grid-add-cell-height: 25px;
 }
 
 #layout {
