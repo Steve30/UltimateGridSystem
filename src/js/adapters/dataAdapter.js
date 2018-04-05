@@ -71,27 +71,40 @@ export class DataAdapter {
     })
   }
 
-  addNewRowPromise() {
-    return new Promise(resolve => {
-      document.addEventListener("addButtonClicked", () => {
-        const {
-          getValidNewRow
-        } = ColumnContainer.newRowChange;
-        const newRowId = this.rows.length + 1;
+  rowDataChange(callback) {
 
-        let newRowObj = {
-          [leadColumnIdentity]: newRowId
+    return new Proxy({
+      isAdd: null
+    }, {
+      set(target, property, value) {
+
+        if (typeof callback === "function" && property === "isAdd" && value) {
+          const {
+            getValidNewRow
+          } = ColumnContainer.newRowChange;
+
+          let newRowObj = {
+            [leadColumnIdentity]: null
+          }
+
+          Object.assign(newRowObj, getValidNewRow);
+          callback(newRowObj);
         }
 
-        Object.assign(newRowObj, getValidNewRow);
-
-        this.rows.unshift(newRowObj);
-        this.defaultRows = this.rows.slice(0);
-        DataAdapter.$defaultRows = this.defaultRows;
-
-        resolve(true);
-      })
+        return Reflect.set(target, property, null);
+      }
     })
+  }
+
+  async addedNewRow(newRowObj) {
+    const id = this.rows.length + 1;
+    newRowObj[leadColumnIdentity] = id;
+
+    this.rows.unshift(newRowObj);
+    this.defaultRows = this.rows.slice(0);
+    DataAdapter.$defaultRows = this.defaultRows;
+
+    return true;
   }
 
   getDataMap(searchedColumns) {

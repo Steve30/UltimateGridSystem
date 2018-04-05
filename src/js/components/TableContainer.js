@@ -39,6 +39,12 @@ export class TableContainer {
       this.renderColumns(true);
     })
 
+    TableContainer.rowDataChangeProxy = this.dataAdapter.rowDataChange((newRowObj) => {
+      this.dataAdapter.addedNewRow(newRowObj).then(() => {
+        this.renderColumns(true);
+      })
+    })
+
     if (isSearchRow) {
       this.gridContainerClassSet.add("on-search");
     }

@@ -1,4 +1,5 @@
 import { ColumnContainer } from "./ColumnContainer.js";
+import { TableContainer } from "./TableContainer.js";
 
 export class LeadColumnContainer extends ColumnContainer {
   constructor(columnConfig) {
@@ -58,7 +59,7 @@ export class LeadColumnContainer extends ColumnContainer {
             document.dispatchEvent(new Event("searchButtonClicked"));
             break;
           case "add-button":
-            document.dispatchEvent(new Event("addButtonClicked"));
+            TableContainer.rowDataChangeProxy.isAdd = true;
             break;
           case "title":
             if (this.isCheck) {
