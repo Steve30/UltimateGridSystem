@@ -46,10 +46,17 @@ export class TableContainer {
       this.renderColumns(true);
     })
 
-    TableContainer.rowDataChangeProxy = this.dataAdapter.rowDataChange((newRowObj) => {
-      this.dataAdapter.addedNewRow(newRowObj).then(() => {
-        this.renderColumns(true);
-      })
+    TableContainer.rowDataChangeProxy = this.dataAdapter.rowDataChange((property, value) => {
+      if (property === "isAdd") {
+        this.dataAdapter.addedNewRow(value).then(() => {
+          this.renderColumns(true);
+        })
+      } else if (property === "deleteRows") {
+        this.dataAdapter.deleteRows(value).then(() => {
+          this.renderColumns(true);
+        })
+      }
+
     })
 
     if (this.isSearchRow) {
@@ -82,6 +89,16 @@ export class TableContainer {
 
       this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
       this.setColumnTemplateAreas();
+    })
+
+    this.gridContainer.addEventListener("deleteKeyDown", () => {
+      const checkedRows = this.gridContainer.querySelectorAll(".cell-row.checked");
+
+      const checkedRowIds = Array.from(checkedRows).map(({ dataset: { id } }) => id);
+
+      if (checkedRowIds.length > 0) {
+        TableContainer.rowDataChangeProxy.deleteRows = checkedRowIds;
+      }
     })
   }
 

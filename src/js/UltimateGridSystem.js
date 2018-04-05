@@ -1,6 +1,5 @@
 import { TableContainer } from "./components/TableContainer.js";
-
-"use strict";
+import { default as GridEvent } from "./events/gridEvent.js";
 
 const tableContainer = new TableContainer({
   isSearchRow: true,
@@ -9,7 +8,12 @@ const tableContainer = new TableContainer({
   isLeadColumnCheck: true
 });
 
+const gridEvent = new GridEvent({
+  deleteRow: true
+});
+
 tableContainer.renderGridLayout()
   .then(() => {
     tableContainer.initGridTable();
+    gridEvent.initEvent(tableContainer.gridContainer);
   })

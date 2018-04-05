@@ -74,7 +74,8 @@ export class DataAdapter {
   rowDataChange(callback) {
 
     return new Proxy({
-      isAdd: null
+      isAdd: null,
+      deleteRows: null
     }, {
       set(target, property, value) {
 
@@ -88,7 +89,11 @@ export class DataAdapter {
           }
 
           Object.assign(newRowObj, getValidNewRow);
-          callback(newRowObj);
+          callback(property, newRowObj);
+        } else if (typeof callback === "function"
+                  && property === "deleteRows"
+                  && Array.isArray(value)) {
+          callback(property, value);
         }
 
         return Reflect.set(target, property, null);
@@ -101,6 +106,22 @@ export class DataAdapter {
     newRowObj[leadColumnIdentity] = id;
 
     this.rows.unshift(newRowObj);
+    this.defaultRows = this.rows.slice(0);
+    DataAdapter.$defaultRows = this.defaultRows;
+
+    return true;
+  }
+
+  async deleteRows(ids) {
+    this.rows.forEach((row, index) => {
+      const deletedIndex = ids.indexOf(row[leadColumnIdentity]);
+
+      if (deletedIndex) {
+        ids.splice(deletedIndex, 1);
+        this.rows.splice(index, 1);
+      }
+    });
+
     this.defaultRows = this.rows.slice(0);
     DataAdapter.$defaultRows = this.defaultRows;
 
