@@ -8,3 +8,8 @@ const tableContainer = new TableContainer({
   dragAndDropColumn: true,
   isLeadColumnCheck: true
 });
+
+tableContainer.renderGridLayout()
+  .then(() => {
+    tableContainer.initGridTable();
+  })

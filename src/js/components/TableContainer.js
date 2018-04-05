@@ -20,16 +20,23 @@ export class TableContainer {
     this.dataAdapter = new DataAdapter();
     this.dragAndDropColumn = dragAndDropColumn;
     this.isLeadColumnCheck = isLeadColumnCheck;
+    this.isSearchRow = isSearchRow;
+    this.isAddRow = isAddRow;
 
     this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
 
     this.gridContainerClassSet = new Set();
     this.layout = document.querySelector("#layout");
     this.container = document.querySelector("#grid-template");
-    const clone = document.importNode(this.container.content, true);
+    this.clonedContent = document.importNode(this.container.content, true);
+  }
 
-    this.layout.appendChild(clone);
+  async renderGridLayout() {
+    this.layout.appendChild(this.clonedContent);
+    return true;
+  }
 
+  initGridTable() {
     this.createProxyTable();
     this.setColumnTemplateAreas();
 
@@ -45,11 +52,11 @@ export class TableContainer {
       })
     })
 
-    if (isSearchRow) {
+    if (this.isSearchRow) {
       this.gridContainerClassSet.add("on-search");
     }
 
-    if (isAddRow) {
+    if (this.isAddRow) {
       this.gridContainerClassSet.add("on-add-row");
     }
 
