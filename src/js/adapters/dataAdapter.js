@@ -16,6 +16,22 @@ export class DataAdapter {
     return this.defaultRows;
   }
 
+  static set $defaultSortRows(value) {
+    this.defaultSortRows = value;
+  }
+
+  static get $defaultSortRows() {
+    return this.defaultSortRows;
+  }
+
+  set $sortedConfig(value) {
+    this.sortedConfig = value;
+  }
+
+  get $sortedConfig() {
+    return this.sortedConfig;
+  }
+
   constructor() {
     if (!DataAdapter.singleton) {
       DataAdapter.singleton = this;
@@ -42,14 +58,16 @@ export class DataAdapter {
     DataAdapter.$defaultRows = this.defaultRows;
   }
 
-  sortPromise() {
-    return new Promise(resolve => {
-      document.addEventListener("sorted", ({ detail }) => {
-        this.sortedConfig = detail;
-        this.rows = DataAdapter.$defaultRows.slice(0);
+  rowSortChange(callback) {
+    return new Proxy([], {
+      set(target, property, value) {
 
-        resolve();
-      })
+        if (typeof callback === "function") {
+          callback(value);
+        }
+
+        return Reflect.set(target, property, value);
+      }
     })
   }
 

@@ -7,6 +7,7 @@ import { DataAdapter } from "../adapters/dataAdapter.js";
 import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
 
 export class TableContainer {
+
   constructor(config = defaultConfig) {
     const {
       isSearchRow,
@@ -31,6 +32,12 @@ export class TableContainer {
 
     this.createProxyTable();
     this.setColumnTemplateAreas();
+
+    TableContainer.rowSortChangeProxy = this.dataAdapter.rowSortChange((changeColumnConfig) => {
+      this.dataAdapter.rows = DataAdapter.$defaultRows.slice(0);
+      this.dataAdapter.$sortedConfig = changeColumnConfig;
+      this.renderColumns(true);
+    })
 
     if (isSearchRow) {
       this.gridContainerClassSet.add("on-search");
@@ -131,14 +138,6 @@ export class TableContainer {
 
     this.subscribeSearchPromise();
     this.setGridTemplateColumnsStyle();
-
-    this.dataAdapter.addNewRowPromise().then(() => {
-      this.renderColumns(true);
-    });
-
-    this.dataAdapter.sortPromise().then(() => {
-      this.renderColumns(true);
-    })
   }
 
   setGridTemplateColumnsStyle() {

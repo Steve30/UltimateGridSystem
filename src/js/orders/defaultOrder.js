@@ -1,9 +1,26 @@
-import { DataAdapter } from "../adapters/dataAdapter.js";
+import {
+  DataAdapter
+} from "../adapters/dataAdapter.js";
+import {
+  TableContainer
+} from "../components/TableContainer.js";
 
 export default class {
+
+  static set $defaultOrderRows(value) {
+    this.defaultOrderRows = value;
+  }
+
+  static get $defaultOrderRows() {
+    return this.defaultOrderRows;
+  }
+
   constructor(columnName) {
     this.columnName = columnName;
-    this.rows = DataAdapter.$defaultRows.slice(0);
+
+    if (!DataAdapter.$defaultSortRows) {
+      DataAdapter.$defaultSortRows = DataAdapter.$defaultRows.slice(0);
+    }
   }
 
   getTemplate(sortClass = "fa-sort") {
@@ -30,7 +47,7 @@ export default class {
         break;
       case "fa-sort-desc":
         element.classList.replace(className, "fa-sort");
-        DataAdapter.$defaultRows = this.rows;
+        DataAdapter.$defaultRows = DataAdapter.$defaultSortRows.slice(0);
         break;
       default:
         element.classList.replace(className, "fa-sort-asc");
@@ -43,12 +60,10 @@ export default class {
         break;
     }
 
-    document.dispatchEvent(new CustomEvent("sorted", {
-      detail: {
-        columnName: this.columnName,
-        sortClass: element.classList.item(2)
-      }
-    }))
+    TableContainer.rowSortChangeProxy[0] = {
+      columnName: this.columnName,
+      sortClass: element.classList.item(2)
+    }
   }
 
 }
