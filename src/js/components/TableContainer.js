@@ -5,6 +5,7 @@ import { LeadColumnContainer } from "./LeadColumnContainer.js";
 import { SearchEvent } from "../events/searchEvent.js";
 import { DataAdapter } from "../adapters/dataAdapter.js";
 import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
+import { ActionColumnContainer } from "./ActionColumnContainer.js";
 
 export class TableContainer {
 
@@ -163,6 +164,14 @@ export class TableContainer {
       }
 
     };
+
+    const indexes = this.dataAdapter.rows.map((item, index) => index);
+
+    const actionColumn = new ActionColumnContainer({
+      set: new Set(indexes)
+    });
+    this.gridContainer.appendChild(actionColumn.cloneContent());
+    actionColumn.afterInserted();
 
     ColumnContainer.newRowChange = DataAdapter.newRowChangeProxy();
 
