@@ -1,0 +1,11 @@
+#grid-container #actions .cell-action {
+  box-sizing: border-box;
+  border-bottom: solid 1px #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#grid-container #actions .cell-action:nth-of-type(1) {
+  outline: solid #000 1px;
+}

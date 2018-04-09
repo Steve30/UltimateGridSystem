@@ -31,6 +31,9 @@ const columnConfigs = [{
   isAddRow: true,
   isSearchRow: true,
   isOrder: true
+}, {
+  id: "actions",
+  title: "Actions"
 }];
 
 export {

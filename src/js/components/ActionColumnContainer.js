@@ -8,8 +8,9 @@ export class ActionColumnContainer extends ColumnContainer {
   render(columnName, columnConfig) {
     const { set } = columnConfig;
 
-    const cellTemplates = Array.from(set).map((value) => `<a style="grid-area: cell-${value}" class="cell-action cell-row">
-    </a>`).join("");
+    const cellTemplates = Array.from(set).map((value) => `<span style="grid-area: cell-${value}" class="cell-action cell-row">
+      <a href="" class="fa fa-trash"></a>
+    </span>`).join("");
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
       <strong>Actions</strong>

@@ -1,6 +1,7 @@
 @import "reset.css";
 @import "variables.css";
 @import "./columns/leadColumn.css";
+@import "./columns/actionColumn.css";
 
 input {
   margin: 0;
