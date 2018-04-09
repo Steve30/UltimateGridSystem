@@ -21,5 +21,12 @@ export class ActionColumnContainer extends ColumnContainer {
 
   afterInserted() {
     this.setCssVariable();
+
+    this.columnEl.querySelectorAll(".cell-action a").forEach((element) => {
+      element.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      })
+    })
   }
 }
