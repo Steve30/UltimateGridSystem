@@ -1,6 +1,7 @@
 import { TableContainer } from "./components/TableContainer.js";
 import { default as GridEvent } from "./events/gridEvent.js";
 import ContextMenu from "./components/ContextMenu.js";
+import {default as contextMenuConfig } from "./components/contextMenus/contextMenuConfig.js";
 
 const tableContainer = new TableContainer({
   isSearchRow: true,
@@ -13,7 +14,7 @@ const gridEvent = new GridEvent({
   deleteRow: true
 });
 
-const contextMenu = new ContextMenu();
+const contextMenu = new ContextMenu(contextMenuConfig);
 
 tableContainer.renderGridLayout()
   .then(() => {
@@ -24,6 +25,6 @@ tableContainer.renderGridLayout()
       event.preventDefault();
 
       const { clientX, clientY } = event;
-      contextMenu.render(clientX, clientY);
+      contextMenu.render(tableContainer.layout, clientX, clientY);
     });
   })

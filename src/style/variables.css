@@ -5,4 +5,5 @@
   --grid-header-cell-height: 25px;
   --grid-search-cell-height: 25px;
   --grid-add-cell-height: 25px;
+  --context-menu-border-style: solid 1px #eee;
 }
