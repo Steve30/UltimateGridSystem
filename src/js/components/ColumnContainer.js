@@ -70,7 +70,7 @@ export class ColumnContainer {
       <input type="text" class="add-row" name='addrow-${columnName}' placeholder="Create ${columnName}"/>
     </label>` : "";
 
-    const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
+    const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}" data-row-index="${index}" class="cell-label cell-row">
       <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
     </label>`).join("");
 

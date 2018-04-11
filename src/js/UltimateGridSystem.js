@@ -14,17 +14,15 @@ const gridEvent = new GridEvent({
   deleteRow: true
 });
 
-const contextMenu = new ContextMenu(contextMenuConfig);
+const contextMenu = new ContextMenu(contextMenuConfig, true, "cellContextMenu");
 
 tableContainer.renderGridLayout()
   .then(() => {
     tableContainer.initGridTable();
+
     gridEvent.initEvent(tableContainer.gridContainer);
 
-    tableContainer.gridContainer.addEventListener("contextmenu", (event) => {
-      event.preventDefault();
+    contextMenu.$menuHolderEl = tableContainer.layout;
 
-      const { clientX, clientY } = event;
-      contextMenu.render(tableContainer.layout, clientX, clientY);
-    });
+    gridEvent.subscribeContextMenuEvent(tableContainer.gridContainer);
   })
