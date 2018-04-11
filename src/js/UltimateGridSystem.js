@@ -1,7 +1,15 @@
-import { TableContainer } from "./components/TableContainer.js";
-import { default as GridEvent } from "./events/gridEvent.js";
+import {
+  TableContainer
+} from "./components/TableContainer.js";
+import {
+  default as GridEvent
+} from "./events/gridEvent.js";
 import ContextMenu from "./components/ContextMenu.js";
-import {default as contextMenuConfig } from "./components/contextMenus/contextMenuConfig.js";
+import {
+  default as contextMenuConfig
+} from "./components/contextMenus/contextMenuConfig.js";
+import { leadColumnIdentity } from "./gridConfig.js";
+import { DataAdapter } from "./adapters/dataAdapter.js";
 
 const tableContainer = new TableContainer({
   isSearchRow: true,
@@ -26,3 +34,37 @@ tableContainer.renderGridLayout()
 
     gridEvent.subscribeContextMenuEvent(tableContainer.gridContainer);
   })
+
+window.addEventListener("insertBeforeThis", ({
+  detail
+}) => {
+  const { rowIndex } = detail;
+  const rowLength = tableContainer.dataAdapter.rows.length;
+
+  if (rowIndex === 0) {
+    tableContainer.dataAdapter.rows.unshift({
+      [leadColumnIdentity]: rowLength + 1,
+      names: "",
+      sexes: "",
+      adults: ""
+    })
+
+    tableContainer.dataAdapter.defaultRows = tableContainer.dataAdapter.rows.slice(0);
+
+    DataAdapter.$defaultRows = tableContainer.dataAdapter.defaultRows;
+
+    tableContainer.renderColumns(true);
+  }
+})
+
+window.addEventListener("insertAfterThis", ({
+  detail
+}) => {
+  console.log(detail);
+})
+
+window.addEventListener("insertAfterFirst", ({
+  detail
+}) => {
+  console.log(detail);
+})

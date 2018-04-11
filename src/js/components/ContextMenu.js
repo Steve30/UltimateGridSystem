@@ -56,7 +56,7 @@ export default class ContextMenu {
     window.addEventListener(this.customEventName, ({ detail }) => {
       const { offsetTop, offsetLeft, rowIndex } = detail;
 
-      this.rowIndex = rowIndex;
+      this.rowIndex = parseInt(rowIndex);
       this.render(offsetLeft, offsetTop);
     })
   }
