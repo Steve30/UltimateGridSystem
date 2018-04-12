@@ -5,6 +5,7 @@ import { LeadColumnContainer } from "./LeadColumnContainer.js";
 import { SearchEvent } from "../events/searchEvent.js";
 import { DataAdapter } from "../adapters/dataAdapter.js";
 import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
+import { stringFilter } from "../filters/stringFilter.js";
 
 export class TableContainer {
 
@@ -178,6 +179,7 @@ export class TableContainer {
   subscribeSearchPromise() {
     this.searchEvent.searchPromise().then(isSearch => {
       if (isSearch) {
+        this.dataAdapter.rows = this.rows;
         this.renderColumns(isSearch);
       }
     })
@@ -185,7 +187,21 @@ export class TableContainer {
 
   getFilteredRows(column, value, isSearchInDefaultRows = true) {
     const rows = isSearchInDefaultRows ? this.dataAdapter.defaultRows : this.dataAdapter.rows;
-    return rows.filter((item) => item[column].toLowerCase().includes(value));
+
+    let filtered;
+    const { filterType } = columnConfigs.find(item => item.id === column);
+
+    switch (filterType) {
+      case "string":
+        filtered = stringFilter(rows, column, value);
+        break;
+
+      default:
+        filtered = rows.filter((item) => item[column].toLowerCase().includes(value));
+        break;
+    }
+
+    return filtered;
   }
 
   createProxyTable() {

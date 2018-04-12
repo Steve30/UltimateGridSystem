@@ -23,11 +23,12 @@ export class SearchEvent {
             columnName,
             searchValue
           } = search;
+
           this.isSearchInDefaultRows = true;
 
           let find = this.tableContainer.searchedColumns.find(item => item && item[columnName]);
 
-          this.setTableContainerRows();
+          this.setTableContainerRows(columnName, searchValue);
 
           if (find) {
             find[columnName] = searchValue;

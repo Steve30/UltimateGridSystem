@@ -16,18 +16,21 @@ const columnConfigs = [{
 }, {
   id: "names",
   title: "Names",
+  filterType: "string",
   isAddRow: true,
   isSearchRow: true,
   isOrder: true
 }, {
   id: "sexes",
   title: "Sexes",
+  filterType: "string",
   isAddRow: true,
   isSearchRow: true,
   isOrder: true
 }, {
   id: "adults",
   title: "Adults",
+  filterType: "bool",
   isAddRow: true,
   isSearchRow: true,
   isOrder: true
