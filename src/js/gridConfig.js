@@ -33,8 +33,16 @@ const columnConfigs = [{
   isOrder: true
 }];
 
+const emptyRow = {
+  [leadColumnIdentity]: null,
+  names: "",
+  sexes: "",
+  adults: ""
+}
+
 export {
   leadColumnIdentity,
   defaultConfig,
-  columnConfigs
+  columnConfigs,
+  emptyRow
 };

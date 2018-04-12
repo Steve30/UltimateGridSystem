@@ -6,8 +6,8 @@ const menuItems = [
     title: "Insert row after this row",
     id: "insertAfterThis"
   }, {
-    title: "Insert row after the first row",
-    id: "insertAfterFirst"
+    title: "Delete this row",
+    id: "deleteThis"
   }]
 ];
 
