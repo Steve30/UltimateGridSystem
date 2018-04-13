@@ -1,0 +1,34 @@
+.column.dropdown .dropdown-holder {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.column.dropdown .dropdown-holder label {
+  flex-grow: 1;
+  align-items: center;
+}
+
+.column.dropdown .dropdown-holder label i {
+  margin: 0 5px 0 0;
+}
+
+.column.dropdown .dropdown-holder nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  background: #fff;
+  padding: 5px 0;
+  z-index: 1;
+}
+
+.column.dropdown .dropdown-holder nav a {
+  padding: 5px;
+}
+
+.column.dropdown .dropdown-holder nav a:hover {
+  background: #e1f5fe;
+}

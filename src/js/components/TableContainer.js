@@ -6,6 +6,7 @@ import { SearchEvent } from "../events/searchEvent.js";
 import { DataAdapter } from "../adapters/dataAdapter.js";
 import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
 import { stringFilter } from "../filters/stringFilter.js";
+import { DropdownColumnContainer } from "./DropdownColumnContainer.js";
 
 export class TableContainer {
 
@@ -157,8 +158,19 @@ export class TableContainer {
     for (const [columnName, columnConfig] of gridDataMap) {
 
       if (columnName !== leadColumnIdentity) {
+        let columnContainer;
         columnConfig.dragAndDropColumn = this.dragAndDropColumn;
-        const columnContainer = new ColumnContainer(columnName, columnConfig);
+
+        switch (columnConfig.type) {
+          case "simpleDropdown":
+            columnContainer = new DropdownColumnContainer(columnName, columnConfig);
+            break;
+
+          default:
+            columnContainer = new ColumnContainer(columnName, columnConfig);
+            break;
+        }
+
         this.gridContainer.appendChild(columnContainer.cloneContent());
         columnContainer.afterInserted();
       }

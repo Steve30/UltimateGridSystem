@@ -24,6 +24,7 @@ const columnConfigs = [{
   id: "sexes",
   title: "Sexes",
   filterType: "string",
+  type: "simpleDropdown",
   isAddRow: true,
   isSearchRow: true,
   isOrder: true
@@ -31,6 +32,7 @@ const columnConfigs = [{
   id: "adults",
   title: "Adults",
   filterType: "bool",
+  type: "checkDropdown",
   isAddRow: true,
   isSearchRow: true,
   isOrder: true
