@@ -17,12 +17,24 @@
   position: absolute;
   top: 0;
   left: 0;
-  display: none;
-  width: 100%;
+  display: flex;
+  height: 0;
+  visibility: hidden;
+  width: calc(100% - 26px);
   flex-direction: column;
   background: #fff;
   padding: 5px 0;
   z-index: 1;
+  box-shadow: 5px 5px 5px rgb(158, 158, 158);
+}
+
+.column.dropdown .dropdown-holder nav .empty-cell {
+  border-bottom: solid 1px rgb(158, 158, 158);
+}
+
+.column.dropdown .dropdown-holder nav.show {
+  height: auto;
+  visibility: visible;
 }
 
 .column.dropdown .dropdown-holder nav a {

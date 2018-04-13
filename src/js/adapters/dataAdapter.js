@@ -57,6 +57,11 @@ export class DataAdapter {
       names: "Tímea",
       sexes: "Nő",
       adults: true
+    }, {
+      [leadColumnIdentity]: 5,
+      names: "Athos",
+      sexes: "",
+      adults: true
     }];
 
     this.defaultRows = this.rows.slice(0);

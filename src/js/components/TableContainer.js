@@ -205,7 +205,7 @@ export class TableContainer {
 
     switch (filterType) {
       case "string":
-        filtered = stringFilter(rows, column, value);
+        filtered = stringFilter(rows, column, value.toLowerCase());
         break;
 
       default:

@@ -1,7 +1,7 @@
 export function stringFilter(rows, column, filterValue) {
   let filtered;
 
-  const regex = /^(\*?)([^*])(\*?)/g;
+  const regex = /^(\*?)([^*]+)(\*?)/g;
   const match = regex.exec(filterValue);
 
   if (match) {
@@ -11,7 +11,7 @@ export function stringFilter(rows, column, filterValue) {
 
     if (findJokerChar) {
       const startJoker = jokerStrings[0];
-      const searchString = jokerStrings[1].toLowerCase();
+      const searchString = jokerStrings[1];
       const endJoker = jokerStrings[jokerStrings.length - 1];
 
       if (startJoker && !endJoker) {
@@ -28,9 +28,15 @@ export function stringFilter(rows, column, filterValue) {
           .startsWith(searchString));
       }
     } else {
-      filtered = rows.filter((item) => item[column]
-        .toLowerCase()
-        .includes(filterValue));
+
+      if (filterValue === "-empty cells-") {
+        filtered = rows.filter((item) => !item[column]);
+      } else {
+        filtered = rows.filter((item) => item[column]
+          .toLowerCase()
+          .includes(filterValue));
+      }
+
     }
 
   } else {
