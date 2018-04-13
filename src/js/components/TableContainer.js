@@ -7,6 +7,7 @@ import { DataAdapter } from "../adapters/dataAdapter.js";
 import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
 import { stringFilter } from "../filters/stringFilter.js";
 import { DropdownColumnContainer } from "./DropdownColumnContainer.js";
+import { MultiDropdownColumnContainer } from "./MultiDropdownColumnContainer.js";
 
 export class TableContainer {
 
@@ -162,8 +163,12 @@ export class TableContainer {
         columnConfig.dragAndDropColumn = this.dragAndDropColumn;
 
         switch (columnConfig.type) {
-          case "simpleDropdown":
+          case "simple-dropdown":
             columnContainer = new DropdownColumnContainer(columnName, columnConfig);
+            break;
+
+          case "multi-dropdown":
+            columnContainer = new MultiDropdownColumnContainer(columnName, columnConfig);
             break;
 
           default:

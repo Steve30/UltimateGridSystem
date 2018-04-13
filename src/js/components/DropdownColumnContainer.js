@@ -15,7 +15,8 @@ export class DropdownColumnContainer extends ColumnContainer {
       searchValue,
       dragAndDropColumn,
       title,
-      sortClass
+      sortClass,
+      type
     } = columnConfig;
 
     this.dragAndDropColumn = dragAndDropColumn;
@@ -50,7 +51,7 @@ export class DropdownColumnContainer extends ColumnContainer {
       <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
     </label>`).join("");
 
-    this.container.innerHTML = `<div id="${columnName}" class="column dropdown">
+    this.container.innerHTML = `<div id="${columnName}" class="column dropdown ${type}">
       <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
       ${searchTemplate}
       ${addRowTemplate}
@@ -119,7 +120,7 @@ export class DropdownColumnContainer extends ColumnContainer {
       if (isRemove) {
         delete element.onclick;
       } else {
-        element.onclick = this.onClickedItem.bind(this)
+        element.onclick = this.onClickedItem.bind(this);
       }
     })
   }

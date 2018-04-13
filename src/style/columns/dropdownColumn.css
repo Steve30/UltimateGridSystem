@@ -44,3 +44,25 @@
 .column.dropdown .dropdown-holder nav a:hover {
   background: #e1f5fe;
 }
+
+.column.dropdown.multi-dropdown .dropdown-holder nav a {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.column.dropdown.multi-dropdown .dropdown-holder nav a[data-check]:after {
+  content: "";
+  border: solid 1px #000;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.column.dropdown.multi-dropdown .dropdown-holder nav a.checked[data-check]:after {
+  content: attr(data-check);
+}
