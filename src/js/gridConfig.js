@@ -23,7 +23,7 @@ const columnConfigs = [{
 }, {
   id: "sexes",
   title: "Sexes",
-  filterType: "string",
+  filterType: "multiString",
   type: "multi-dropdown",
   isAddRow: true,
   isSearchRow: true,

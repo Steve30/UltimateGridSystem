@@ -1,3 +1,5 @@
+import { DropdownColumnContainer } from "../components/DropdownColumnContainer.js";
+
 export default class {
   constructor({ deleteRow }) {
     this.deleteRow = deleteRow;
@@ -15,6 +17,13 @@ export default class {
             element.dispatchEvent(new Event("deleteKeyDown"));
           }
 
+          break;
+
+        case 13:
+          if (DropdownColumnContainer.$currentDropdownConstructor === "MultiDropdownColumnContainer") {
+            event.preventDefault();
+            document.dispatchEvent(new Event("enterOnMultiDropDown"));
+          }
           break;
 
         default:

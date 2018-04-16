@@ -8,6 +8,7 @@ import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.
 import { stringFilter } from "../filters/stringFilter.js";
 import { DropdownColumnContainer } from "./DropdownColumnContainer.js";
 import { MultiDropdownColumnContainer } from "./MultiDropdownColumnContainer.js";
+import { multiStringFilter } from "../filters/multiStringFilter.js";
 
 export class TableContainer {
 
@@ -212,7 +213,9 @@ export class TableContainer {
       case "string":
         filtered = stringFilter(rows, column, value.toLowerCase());
         break;
-
+      case "multiString":
+        filtered = multiStringFilter(rows, column, value.toLowerCase());
+        break;
       default:
         filtered = rows.filter((item) => item[column].toLowerCase().includes(value));
         break;

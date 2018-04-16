@@ -3,6 +3,14 @@ import {
 } from "./ColumnContainer.js";
 
 export class DropdownColumnContainer extends ColumnContainer {
+  static set $currentDropdownConstructor(value) {
+    this.currentDropdownConstructor = value;
+  }
+
+  static get $currentDropdownConstructor() {
+    return this.currentDropdownConstructor;
+  }
+
   constructor(columnName, columnConfig) {
     super(columnName, columnConfig);
   }
@@ -91,10 +99,13 @@ export class DropdownColumnContainer extends ColumnContainer {
     const isShow = nextElementSibling.classList.toggle("show");
 
     if (isShow) {
+      DropdownColumnContainer.$currentDropdownConstructor = this.constructor.name;
+
       this.currentDropdown = element;
       this.initClickEventForItem(nextElementSibling.querySelectorAll("a"));
     } else {
       this.initClickEventForItem(nextElementSibling.querySelectorAll("a"), true);
+      DropdownColumnContainer.$currentDropdownConstructor = null;
     }
   }
 
