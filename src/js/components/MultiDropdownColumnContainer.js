@@ -1,4 +1,6 @@
-import { DropdownColumnContainer } from "./DropdownColumnContainer.js";
+import {
+  DropdownColumnContainer
+} from "./DropdownColumnContainer.js";
 
 export class MultiDropdownColumnContainer extends DropdownColumnContainer {
   constructor(columnName, columnConfig) {
@@ -9,9 +11,11 @@ export class MultiDropdownColumnContainer extends DropdownColumnContainer {
     document.addEventListener("enterOnMultiDropDown", () => {
       const values = Array.from(this.selectedItemSet.values()).join(";");
 
-      this.labelEl.dispatchEvent(new Event("click"));
-      this.labelEl.control.value = values;
-      this.labelEl.control.dispatchEvent(new Event("change"));
+      this.currentDropdown.dispatchEvent(new Event("click"));
+      this.currentDropdown.control.value = values;
+      this.currentDropdown.control.dispatchEvent(new Event("change"));
+
+      this.setExistCheckedItem();
     });
 
   }
@@ -29,15 +33,47 @@ export class MultiDropdownColumnContainer extends DropdownColumnContainer {
 
   afterInserted() {
     super.afterInserted();
-    this.labelEl = this.columnEl.querySelector(".dropdown-holder label");
+  }
+
+  initClickEventForItem(clickElements, isRemove = false) {
+    super.initClickEventForItem(clickElements, isRemove);
+    this.listItems = clickElements;
+
+    if (!isRemove) {
+      this.setExistCheckedItem();
+    }
+  }
+
+  setExistCheckedItem() {
+
+    this.selectedItemSet.clear();
+
+    this.listItems.forEach(element => {
+      const {
+        dataset: {
+          value
+        }
+      } = element;
+
+      if (this.currentDropdown.control.value.includes(value)) {
+        element.classList.add("checked");
+        this.selectedItemSet.add(value);
+      }
+    })
   }
 
   onClickedItem(event) {
     event.preventDefault();
 
-    const { target } = event;
+    const {
+      target
+    } = event;
     const element = target.tagName === "SPAN" ? target.parentElement : target;
-    const { dataset: { value } } = element;
+    const {
+      dataset: {
+        value
+      }
+    } = element;
 
     switch (value) {
       case "-all-":

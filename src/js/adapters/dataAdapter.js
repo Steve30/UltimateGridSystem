@@ -209,7 +209,7 @@ export class DataAdapter {
         for (const [key, value] of Object.entries(column)) {
           const prevValue = prevRowObj[key];
 
-          if (prevValue && prevValue !== value) {
+          if (prevValue !== undefined && prevValue !== value) {
             singleton.updateRow(prevRowObj.rowId, column);
           }
         }

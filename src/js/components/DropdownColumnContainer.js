@@ -32,6 +32,7 @@ export class DropdownColumnContainer extends ColumnContainer {
     const values = Array.from(set).map(({
       value
     }) => value);
+
     this.dropDownListSet = new Set(values);
     this.generateDropdownListItems();
 
@@ -55,9 +56,15 @@ export class DropdownColumnContainer extends ColumnContainer {
       <nav>${this.list}</nav>
     </div>` : "";
 
-    const cellTemplates = values.map((value, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
-      <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
-    </label>`).join("");
+    const cellTemplates = values.map((value, index) => `<div class="dropdown-holder cell-row">
+      <label style="grid-area: cell-${index}" class="cell-label">
+        <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
+        <i class="fa fa-chevron-down"></i>
+      </label>
+      <nav>${this.list}</nav>
+    </div>`).join("");
+
+    this.setExistRowValues(values);
 
     this.container.innerHTML = `<div id="${columnName}" class="column dropdown ${type}">
       <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
@@ -100,7 +107,6 @@ export class DropdownColumnContainer extends ColumnContainer {
 
     if (isShow) {
       DropdownColumnContainer.$currentDropdownConstructor = this.constructor.name;
-
       this.currentDropdown = element;
       this.initClickEventForItem(nextElementSibling.querySelectorAll("a"));
     } else {

@@ -60,6 +60,10 @@ export class ColumnContainer {
   render(columnName, columnConfig) {
     const { isSearchRow, isAddRow, set, searchValue, dragAndDropColumn, title, sortClass } = columnConfig;
 
+    const values = Array.from(set).map(({
+      value
+    }) => value);
+
     this.dragAndDropColumn = dragAndDropColumn;
 
     const searchTemplate = isSearchRow ? `<label class="searchfield-label search-row">
@@ -70,9 +74,11 @@ export class ColumnContainer {
       <input type="text" class="add-row" name='addrow-${columnName}' placeholder="Create ${columnName}"/>
     </label>` : "";
 
-    const cellTemplates = Array.from(set).map(({value}, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
+    const cellTemplates = values.map((value, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
       <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
     </label>`).join("");
+
+    this.setExistRowValues(values);
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
       <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
@@ -81,6 +87,12 @@ export class ColumnContainer {
       ${cellTemplates}
       <a href="" class="resize-border" style="grid-area: cell-border"></a>
     </div>`;
+  }
+
+  setExistRowValues(values) {
+    values.forEach((value, index) => {
+      ColumnContainer.existRowChanges[index][this.columnName] = value;
+    });
   }
 
   initOrderClass() {
@@ -204,7 +216,6 @@ export class ColumnContainer {
       })
 
       firstElementChild.addEventListener("change", ({target: {value, name}}) => {
-
         const splitted = name.split("-");
 
         this.existRowChanges[splitted[1]] = {
