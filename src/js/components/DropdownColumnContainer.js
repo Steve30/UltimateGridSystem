@@ -1,6 +1,7 @@
 import {
   ColumnContainer
 } from "./ColumnContainer.js";
+import { DropdownBuilder } from "../builders/dropdownBuilder.js";
 
 export class DropdownColumnContainer extends ColumnContainer {
   static set $currentDropdownConstructor(value) {
@@ -33,9 +34,6 @@ export class DropdownColumnContainer extends ColumnContainer {
       value
     }) => value);
 
-    this.dropDownListSet = new Set(values);
-    this.generateDropdownListItems();
-
     const searchTemplate = isSearchRow ? `<div class="dropdown-holder">
       <label class="searchfield-label search-row">
         <input class="searchfield" type="search" placeholder='Search in ${columnName}' name='searchfield-${columnName}' value='${searchValue ? searchValue : ""}' readonly/>
@@ -44,7 +42,6 @@ export class DropdownColumnContainer extends ColumnContainer {
       <nav>
         <a href="" data-value="-all-">All cells</a>
         <a href="" class="empty-cell" data-value="-empty cells-">Empty cells</a>
-        ${this.list}
       </nav>
     </div>` : "";
 
@@ -53,7 +50,7 @@ export class DropdownColumnContainer extends ColumnContainer {
         <input type="text" class="add" name='addrow-${columnName}' placeholder="Create ${columnName}" readonly/>
         <i class="fa fa-chevron-down"></i>
       </label>
-      <nav>${this.list}</nav>
+      <nav></nav>
     </div>` : "";
 
     const cellTemplates = values.map((value, index) => `<div class="dropdown-holder cell-row">
@@ -61,7 +58,7 @@ export class DropdownColumnContainer extends ColumnContainer {
         <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
         <i class="fa fa-chevron-down"></i>
       </label>
-      <nav>${this.list}</nav>
+      <nav></nav>
     </div>`).join("");
 
     this.setExistRowValues(values);
@@ -75,23 +72,24 @@ export class DropdownColumnContainer extends ColumnContainer {
     </div>`;
   }
 
-  generateDropdownListItems() {
-    this.list = "";
-
-    for (const value of this.dropDownListSet.values()) {
-      if (value) {
-        this.list += `<a href="" data-value="${value}">${value}</a>`;
-      }
-    }
-  }
-
   afterInserted() {
     super.afterInserted();
     this.dropdownElements = this.columnEl.querySelectorAll(".dropdown-holder label");
+  }
+
+  afterContentInit() {
+    const dropdownSet = DropdownBuilder.getCurrentDropdown(this.columnName);
 
     this.dropdownElements.forEach((element, index) => {
+
+      element.nextElementSibling.innerHTML += this.generateDropdownListItems(dropdownSet);
+
       element.addEventListener("click", this.onClickedDropdown.bind(this, index, element))
     })
+  }
+
+  generateDropdownListItems(dropdownSet) {
+    return Array.from(dropdownSet).map(value => `<a href="" data-value="${value}">${value}</a>`).join("");
   }
 
   onClickedDropdown(index, element, event) {

@@ -17,6 +17,7 @@ const columnConfigs = [{
   id: "names",
   title: "Names",
   filterType: "string",
+  type: "simple",
   isAddRow: true,
   isSearchRow: true,
   isOrder: true

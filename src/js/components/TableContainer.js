@@ -1,14 +1,29 @@
 import {
   ColumnContainer
 } from "./ColumnContainer.js";
-import { LeadColumnContainer } from "./LeadColumnContainer.js";
-import { SearchEvent } from "../events/searchEvent.js";
-import { DataAdapter } from "../adapters/dataAdapter.js";
-import { defaultConfig, leadColumnIdentity, columnConfigs } from "../gridConfig.js";
-import { stringFilter } from "../filters/stringFilter.js";
-import { DropdownColumnContainer } from "./DropdownColumnContainer.js";
-import { MultiDropdownColumnContainer } from "./MultiDropdownColumnContainer.js";
-import { multiStringFilter } from "../filters/multiStringFilter.js";
+import {
+  SearchEvent
+} from "../events/searchEvent.js";
+import {
+  DataAdapter
+} from "../adapters/dataAdapter.js";
+import {
+  defaultConfig,
+  leadColumnIdentity,
+  columnConfigs
+} from "../gridConfig.js";
+import {
+  stringFilter
+} from "../filters/stringFilter.js";
+import {
+  multiStringFilter
+} from "../filters/multiStringFilter.js";
+import {
+  ColumnBuilder
+} from "../builders/columnBuilder.js";
+import {
+  DropdownBuilder
+} from "../builders/dropdownBuilder.js";
 
 export class TableContainer {
 
@@ -22,12 +37,16 @@ export class TableContainer {
 
     this.searchEvent = new SearchEvent(this);
     this.dataAdapter = new DataAdapter();
+    this.columnBuilder = new ColumnBuilder();
+
     this.dragAndDropColumn = dragAndDropColumn;
     this.isLeadColumnCheck = isLeadColumnCheck;
     this.isSearchRow = isSearchRow;
     this.isAddRow = isAddRow;
 
-    this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
+    this.columnTemplateAreas = columnConfigs.map(({
+      id
+    }) => `${id}`).join(" ");
 
     this.gridContainerClassSet = new Set();
     this.layout = document.querySelector("#layout");
@@ -47,17 +66,35 @@ export class TableContainer {
     TableContainer.rowSortChangeProxy = this.dataAdapter.rowSortChange((changeColumnConfig) => {
       this.dataAdapter.rows = DataAdapter.$defaultRows.slice(0);
       this.dataAdapter.$sortedConfig = changeColumnConfig;
-      this.renderColumns(true);
+      this.renderColumns(true).then((columnContainers) => {
+        columnContainers.forEach((column) => {
+          column.afterContentInit();
+        })
+      }).catch(error => {
+        console.error(error);
+      });
     })
 
     TableContainer.rowDataChangeProxy = this.dataAdapter.rowDataChange((property, value) => {
       if (property === "isAdd") {
         this.dataAdapter.addedNewRow(value).then(() => {
-          this.renderColumns(true);
+          this.renderColumns(true).then((columnContainers) => {
+            columnContainers.forEach((column) => {
+              column.afterContentInit();
+            })
+          }).catch(error => {
+            console.error(error);
+          });;
         })
       } else if (property === "deleteRows") {
         this.dataAdapter.deleteRows(value).then(() => {
-          this.renderColumns(true);
+          this.renderColumns(true).then((columnContainers) => {
+            columnContainers.forEach((column) => {
+              column.afterContentInit();
+            })
+          }).catch(error => {
+            console.error(error);
+          });
         })
       }
 
@@ -75,30 +112,57 @@ export class TableContainer {
 
     this.searchedColumns = [];
 
-    this.renderColumns();
+    this.renderColumns().then((columnContainers) => {
+      DropdownBuilder.build(this.columnBuilder.defaultColumnMap);
+
+      columnContainers.forEach((column) => {
+        column.afterContentInit();
+      })
+    }).catch(error => {
+      console.error(error);
+    });
 
     this.gridContainer.addEventListener("mousemove", this.mouseMoveEvent.bind(this));
     this.gridContainer.addEventListener("mouseup", () => {
       delete ColumnContainer.$selectedResizeColumn;
     })
 
-    document.addEventListener("dropColumn", ({detail: {dragged, dropped}}) => {
-      const dragIndex = columnConfigs.findIndex(({id}) => id === dragged);
-      const dropIndex = columnConfigs.findIndex(({id}) => id === dropped);
-      const dragObj = columnConfigs.find(({id}) => id === dragged);
-      const dropObj = columnConfigs.find(({id}) => id === dropped);
+    document.addEventListener("dropColumn", ({
+      detail: {
+        dragged,
+        dropped
+      }
+    }) => {
+      const dragIndex = columnConfigs.findIndex(({
+        id
+      }) => id === dragged);
+      const dropIndex = columnConfigs.findIndex(({
+        id
+      }) => id === dropped);
+      const dragObj = columnConfigs.find(({
+        id
+      }) => id === dragged);
+      const dropObj = columnConfigs.find(({
+        id
+      }) => id === dropped);
 
       columnConfigs[dropIndex] = dragObj;
       columnConfigs[dragIndex] = dropObj;
 
-      this.columnTemplateAreas = columnConfigs.map(({id}) => `${id}`).join(" ");
+      this.columnTemplateAreas = columnConfigs.map(({
+        id
+      }) => `${id}`).join(" ");
       this.setColumnTemplateAreas();
     })
 
     this.gridContainer.addEventListener("deleteKeyDown", () => {
       const checkedRows = this.gridContainer.querySelectorAll(".cell-row.checked");
 
-      const checkedRowIds = Array.from(checkedRows).map(({ dataset: { id } }) => id);
+      const checkedRowIds = Array.from(checkedRows).map(({
+        dataset: {
+          id
+        }
+      }) => id);
 
       if (checkedRowIds.length > 0) {
         TableContainer.rowDataChangeProxy.deleteRows = checkedRowIds;
@@ -139,12 +203,12 @@ export class TableContainer {
     ColumnContainer.resetTemplateColumnsStyle();
 
     const gridDataMap = this.dataAdapter.getDataMap(this.searchedColumns);
+    const leadColumn = gridDataMap.get(leadColumnIdentity);
+    const builderPromises = [];
 
     if (isRefresh) {
       this.gridContainer.innerHTML = "";
     }
-
-    const leadColumn = gridDataMap.get(leadColumnIdentity);
 
     if (leadColumn) {
 
@@ -152,41 +216,42 @@ export class TableContainer {
         leadColumn.isCheck = this.isLeadColumnCheck;
       }
 
-      const leadContainer = new LeadColumnContainer(leadColumn);
-      this.gridContainer.appendChild(leadContainer.cloneContent());
-      leadContainer.afterInserted();
+      builderPromises.push(this.columnBuilder.promiseBuild(leadColumn)
+        .then((createdContainer) => {
+          this.gridContainer.appendChild(createdContainer.cloneContent())
+          return createdContainer;
+        }))
     }
 
     for (const [columnName, columnConfig] of gridDataMap) {
 
       if (columnName !== leadColumnIdentity) {
-        let columnContainer;
         columnConfig.dragAndDropColumn = this.dragAndDropColumn;
 
-        switch (columnConfig.type) {
-          case "simple-dropdown":
-            columnContainer = new DropdownColumnContainer(columnName, columnConfig);
-            break;
-
-          case "multi-dropdown":
-            columnContainer = new MultiDropdownColumnContainer(columnName, columnConfig);
-            break;
-
-          default:
-            columnContainer = new ColumnContainer(columnName, columnConfig);
-            break;
-        }
-
-        this.gridContainer.appendChild(columnContainer.cloneContent());
-        columnContainer.afterInserted();
+        builderPromises.push(this.columnBuilder.promiseBuild(columnConfig, columnName)
+          .then((createdContainer) => {
+            this.gridContainer.appendChild(createdContainer.cloneContent())
+            return createdContainer;
+          }));
       }
 
     };
 
-    ColumnContainer.newRowChange = DataAdapter.newRowChangeProxy();
+    return Promise.all(builderPromises)
+      .then(columnContainers => {
+        columnContainers.forEach(columnContainer => {
+          columnContainer.afterInserted();
+        })
 
-    this.subscribeSearchPromise();
-    this.setGridTemplateColumnsStyle();
+        return columnContainers;
+      }).then((columnContainers) => {
+        ColumnContainer.newRowChange = DataAdapter.newRowChangeProxy();
+
+        this.subscribeSearchPromise();
+        this.setGridTemplateColumnsStyle();
+
+        return columnContainers;
+      });
   }
 
   setGridTemplateColumnsStyle() {
@@ -198,7 +263,13 @@ export class TableContainer {
     this.searchEvent.searchPromise().then(isSearch => {
       if (isSearch) {
         this.dataAdapter.rows = this.rows;
-        this.renderColumns(isSearch);
+        this.renderColumns(isSearch).then((columnContainers) => {
+          columnContainers.forEach((column) => {
+            column.afterContentInit();
+          })
+        }).catch(error => {
+          console.error(error);
+        });
       }
     })
   }
@@ -207,7 +278,9 @@ export class TableContainer {
     const rows = isSearchInDefaultRows ? this.dataAdapter.defaultRows : this.dataAdapter.rows;
 
     let filtered;
-    const { filterType } = columnConfigs.find(item => item.id === column);
+    const {
+      filterType
+    } = columnConfigs.find(item => item.id === column);
 
     switch (filterType) {
       case "string":

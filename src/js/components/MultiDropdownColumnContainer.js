@@ -1,6 +1,4 @@
-import {
-  DropdownColumnContainer
-} from "./DropdownColumnContainer.js";
+import { DropdownColumnContainer } from "./DropdownColumnContainer.js";
 
 export class MultiDropdownColumnContainer extends DropdownColumnContainer {
   constructor(columnName, columnConfig) {
@@ -20,15 +18,8 @@ export class MultiDropdownColumnContainer extends DropdownColumnContainer {
 
   }
 
-  generateDropdownListItems() {
-    this.list = "";
-
-    for (const value of this.dropDownListSet.values()) {
-      if (value) {
-        this.list += `<a href="" data-check="&#x2713;" data-value="${value}">
-        <span>${value}</span></a>`;
-      }
-    }
+  generateDropdownListItems(dropdownSet) {
+    return Array.from(dropdownSet).map(value => `<a href="" data-check="&#x2713;" data-value="${value}"><span>${value}</span></a>`).join("");
   }
 
   afterInserted() {

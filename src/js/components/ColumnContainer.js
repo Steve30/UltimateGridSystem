@@ -143,6 +143,11 @@ export class ColumnContainer {
     })
   }
 
+  // Override
+  afterContentInit() {
+
+  }
+
   setCssVariable() {
     this.columnEl = document.querySelector(`#${this.columnName}`);
 
