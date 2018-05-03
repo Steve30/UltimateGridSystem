@@ -32,8 +32,8 @@ const columnConfigs = [{
 }, {
   id: "adults",
   title: "Adults",
-  filterType: "bool",
-  type: "check-dropdown",
+  filterType: "boolean",
+  type: "checkbox",
   isAddRow: true,
   isSearchRow: true,
   isOrder: true

@@ -202,7 +202,7 @@ export class ColumnContainer {
         event.preventDefault();
         event.stopPropagation();
 
-        const { readOnly, name, value } = firstElementChild;
+        const { readOnly, name, value, type } = firstElementChild;
 
         const splitted = name.split("-");
 
@@ -210,24 +210,32 @@ export class ColumnContainer {
           [this.columnName]: value
         };
 
-        if (readOnly) {
+        if (readOnly && type !== "checkbox") {
           firstElementChild.removeAttribute("readonly");
         }
 
       })
 
-      firstElementChild.addEventListener("blur", () => {
-        firstElementChild.readOnly = true;
+      firstElementChild.addEventListener("blur", ({target: {type}}) => {
+        if (type !== "checkbox") {
+          firstElementChild.readOnly = true;
+        }
+
       })
 
-      firstElementChild.addEventListener("change", ({target: {value, name}}) => {
+      firstElementChild.addEventListener("change", ({ target: { value, name, type } }) => {
         const splitted = name.split("-");
 
         this.existRowChanges[splitted[1]] = {
           [this.columnName]: value
         };
 
-        firstElementChild.readOnly = true;
+        if (type !== "checkbox") {
+          firstElementChild.readOnly = true;
+        } else {
+          firstElementChild.value = value === "true" ? "false" : "true";
+        }
+
       })
     })
 

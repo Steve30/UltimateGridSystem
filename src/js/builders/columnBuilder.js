@@ -3,6 +3,7 @@ import { LeadColumnContainer } from "../components/LeadColumnContainer.js";
 import { DropdownColumnContainer } from "../components/DropdownColumnContainer.js";
 import { MultiDropdownColumnContainer } from "../components/MultiDropdownColumnContainer.js";
 import { ColumnContainer } from "../components/ColumnContainer.js";
+import { CheckboxColumnContainer } from "../components/CheckboxColumnContainer.js";
 
 export class ColumnBuilder {
 
@@ -30,6 +31,9 @@ export class ColumnBuilder {
           break;
         case "multi-dropdown":
           column = this.createMultiDropdownColumn();
+          break;
+        case "checkbox":
+          column = this.createCheckboxColumn();
           break;
         default:
           column = this.createSimpleColumn();
@@ -60,5 +64,9 @@ export class ColumnBuilder {
 
   createSimpleColumn() {
     return new ColumnContainer(this.columnName, this.columnConfig);
+  }
+
+  createCheckboxColumn() {
+    return new CheckboxColumnContainer(this.columnName, this.columnConfig)
   }
 }

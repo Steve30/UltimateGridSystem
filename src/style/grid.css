@@ -2,6 +2,7 @@
 @import "variables.css";
 @import "./columns/leadColumn.css";
 @import "./columns/dropdownColumn.css";
+@import "./columns/checkboxColumn.css";
 
 input {
   margin: 0;

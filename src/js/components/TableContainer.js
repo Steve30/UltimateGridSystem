@@ -24,6 +24,7 @@ import {
 import {
   DropdownBuilder
 } from "../builders/dropdownBuilder.js";
+import { booleanFilter } from "../filters/booleanFilter.js";
 
 export class TableContainer {
 
@@ -288,6 +289,9 @@ export class TableContainer {
         break;
       case "multiString":
         filtered = multiStringFilter(rows, column, value.toLowerCase());
+        break;
+      case "boolean":
+        filtered = booleanFilter(rows, column, value);
         break;
       default:
         filtered = rows.filter((item) => item[column].toLowerCase().includes(value));
