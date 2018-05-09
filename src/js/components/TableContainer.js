@@ -24,7 +24,9 @@ import {
 import {
   DropdownBuilder
 } from "../builders/dropdownBuilder.js";
-import { booleanFilter } from "../filters/booleanFilter.js";
+import {
+  booleanFilter
+} from "../filters/booleanFilter.js";
 
 export class TableContainer {
 
@@ -53,6 +55,7 @@ export class TableContainer {
     this.layout = document.querySelector("#layout");
     this.container = document.querySelector("#grid-template");
     this.clonedContent = document.importNode(this.container.content, true);
+
   }
 
   async renderGridLayout() {
@@ -61,6 +64,7 @@ export class TableContainer {
   }
 
   initGridTable() {
+
     this.createProxyTable();
     this.setColumnTemplateAreas();
 
