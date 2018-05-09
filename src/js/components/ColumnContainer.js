@@ -1,6 +1,10 @@
-import { DataAdapter } from "../adapters/dataAdapter.js";
+import {
+  DataAdapter
+} from "../adapters/dataAdapter.js";
 
-import { default as defaultOrder} from "../orders/defaultOrder.js";
+import {
+  default as defaultOrder
+} from "../orders/defaultOrder.js";
 
 export class ColumnContainer {
 
@@ -42,7 +46,11 @@ export class ColumnContainer {
     this.container = document.querySelector("#column-template").cloneNode();
     this.columnName = columnName;
 
-    const { width, set, isOrder } = columnConfig;
+    const {
+      width,
+      set,
+      isOrder
+    } = columnConfig;
 
     if (isOrder) {
       this.initOrderClass();
@@ -58,7 +66,15 @@ export class ColumnContainer {
   }
 
   render(columnName, columnConfig) {
-    const { isSearchRow, isAddRow, set, searchValue, dragAndDropColumn, title, sortClass } = columnConfig;
+    const {
+      isSearchRow,
+      isAddRow,
+      set,
+      searchValue,
+      dragAndDropColumn,
+      title,
+      sortClass
+    } = columnConfig;
 
     const values = Array.from(set).map(({
       value
@@ -135,7 +151,9 @@ export class ColumnContainer {
       event.preventDefault();
       event.stopPropagation();
 
-      const { target } = event;
+      const {
+        target
+      } = event;
 
       if (target.classList.contains("sort")) {
         this.order.sortAction(target);
@@ -162,7 +180,9 @@ export class ColumnContainer {
     if (searchFieldEl) {
       const promise = new Promise(resolve => {
         searchFieldEl.addEventListener("change", (event) => {
-          const { value } = event.target;
+          const {
+            value
+          } = event.target;
 
           resolve({
             columnName: this.columnName,
@@ -191,18 +211,29 @@ export class ColumnContainer {
       ColumnContainer.newRowChanges[this.columnName] = null;
     }
 
-    addInput.addEventListener("change", ({target: {value}})=> {
+    addInput.addEventListener("change", ({
+      target: {
+        value
+      }
+    }) => {
       ColumnContainer.newRowChange[this.columnName] = value;
     })
 
     labels.forEach((element) => {
-      const { firstElementChild } = element;
+      const {
+        firstElementChild
+      } = element;
 
       element.addEventListener("dblclick", (event) => {
         event.preventDefault();
         event.stopPropagation();
 
-        const { readOnly, name, value, type } = firstElementChild;
+        const {
+          readOnly,
+          name,
+          value,
+          type
+        } = firstElementChild;
 
         const splitted = name.split("-");
 
@@ -216,14 +247,24 @@ export class ColumnContainer {
 
       })
 
-      firstElementChild.addEventListener("blur", ({target: {type}}) => {
+      firstElementChild.addEventListener("blur", ({
+        target: {
+          type
+        }
+      }) => {
         if (type !== "checkbox") {
           firstElementChild.readOnly = true;
         }
 
       })
 
-      firstElementChild.addEventListener("change", ({ target: { value, name, type } }) => {
+      firstElementChild.addEventListener("change", ({
+        target: {
+          value,
+          name,
+          type
+        }
+      }) => {
         const splitted = name.split("-");
 
         this.existRowChanges[splitted[1]] = {
@@ -258,7 +299,11 @@ export class ColumnContainer {
     this.columnEl.draggable = true;
 
     this.columnEl.addEventListener("dragstart", (event) => {
-      const {target: {id}} = event;
+      const {
+        target: {
+          id
+        }
+      } = event;
 
       event.dataTransfer.setData("text", id);
       event.dataTransfer.effectAllowed = "move";
@@ -272,7 +317,11 @@ export class ColumnContainer {
     this.columnEl.addEventListener("drop", (event) => {
       event.preventDefault();
 
-      const {currentTarget: {id}} = event;
+      const {
+        currentTarget: {
+          id
+        }
+      } = event;
 
       document.dispatchEvent(new CustomEvent("dropColumn", {
         detail: {

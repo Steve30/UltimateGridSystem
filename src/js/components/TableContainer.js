@@ -27,6 +27,9 @@ import {
 import {
   booleanFilter
 } from "../filters/booleanFilter.js";
+import {
+  GridSettingsStore
+} from "./GridSettingsStore.js";
 
 export class TableContainer {
 
@@ -154,10 +157,27 @@ export class TableContainer {
       columnConfigs[dropIndex] = dragObj;
       columnConfigs[dragIndex] = dropObj;
 
-      this.columnTemplateAreas = columnConfigs.map(({
+      const columnIds = columnConfigs.map(({
         id
-      }) => `${id}`).join(" ");
-      this.setColumnTemplateAreas();
+      }) => `${id}`);
+
+      this.columnTemplateAreas = columnIds.join(" ");
+
+      const allColumnsSave = columnIds.map((item, index) => {
+        const columnId = item === "id" ? "lead" : item;
+        const columnEl = this.gridContainer.querySelector(`#${columnId}`);
+
+        return GridSettingsStore.saveColumnPosition(columnId, {
+          position: index,
+          width: columnEl.clientWidth
+        });
+      });
+
+      Promise.all(allColumnsSave).then(() => {
+        GridSettingsStore.saveStoreToLocalStorage();
+        this.setColumnTemplateAreas();
+      })
+
     })
 
     this.gridContainer.addEventListener("deleteKeyDown", () => {

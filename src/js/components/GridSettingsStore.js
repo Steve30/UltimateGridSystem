@@ -24,7 +24,7 @@ export class GridSettingsStore {
 
     if (!isInstanceOfMap) {
       if (configMap) {
-        configMap = new Map([configMap]);
+        configMap = new Map(configMap);
       } else {
         configMap = new Map();
       }
@@ -33,15 +33,23 @@ export class GridSettingsStore {
     return configMap;
   }
 
-  saveStoreToLocalStorage() {
-    localStorage.setItem(GridSettingsStore.storeName, JSON.stringify(...GridSettingsStore.storeMap));
+  static saveStoreToLocalStorage() {
+
+    for (const [key, config] of this.storeMap.entries()) {
+      if (config instanceof Map) {
+        this.storeMap.set(key, Array.from(config));
+      }
+    }
+
+    localStorage.setItem(GridSettingsStore.storeName, JSON.stringify(...GridSettingsStore.storeMap))
   }
 
   static saveColumnPosition(columnName, positionConfig) {
     let positionConfigMap = this.singleton.initConfigMap("positionConfigMap");
     positionConfigMap.set(columnName, positionConfig);
-    GridSettingsStore.storeMap.set("positionConfigMap", ...positionConfigMap);
-    this.singleton.saveStoreToLocalStorage();
+    this.storeMap.set("positionConfigMap", positionConfigMap);
+
+    return Promise.resolve();
   }
 
   static getColumnsByPosition() {
@@ -63,22 +71,22 @@ export class GridSettingsStore {
   }
 
   static saveFilterConfig(columnName, filterValue) {
-    GridSettingsStore.storeMap.set("filterConfig", {
+    this.storeMap.set("filterConfig", {
       columnName: filterValue
     });
-    this.singleton.saveStoreToLocalStorage();
+    this.saveStoreToLocalStorage();
   }
 
   static getExistStoreSetting(type, columnName) {
-    const config = GridSettingsStore.storeMap.get(type);
+    const config = this.storeMap.get(type);
     return config && config[columnName] ? config[columnName] : false;
   }
 
   static saveOrderConfig(columnName, orderType) {
-    GridSettingsStore.storeMap.set("orderConfig", {
+    this.storeMap.set("orderConfig", {
       columnName: orderType
     });
-    this.singleton.saveStoreToLocalStorage();
+    this.saveStoreToLocalStorage();
   }
 
 }
