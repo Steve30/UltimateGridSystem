@@ -202,10 +202,10 @@ export class TableContainer {
   mouseMoveEvent(event) {
     const {
       buttons,
-      layerX
+      movementX
     } = event;
+
     if (buttons === 1 && ColumnContainer.$selectedResizeColumn) {
-      console.log(layerX);
 
       const {
         el: {
@@ -214,9 +214,7 @@ export class TableContainer {
         index
       } = ColumnContainer.$selectedResizeColumn;
 
-      console.log(clientWidth, layerX);
-
-      ColumnContainer.setCurrentTemplateColumn(index, layerX);
+      ColumnContainer.setCurrentTemplateColumn(index, clientWidth + movementX);
 
       this.setGridTemplateColumnsStyle();
     }
@@ -230,6 +228,8 @@ export class TableContainer {
     const gridDataMap = this.dataAdapter.getDataMap(this.searchedColumns);
     const leadColumn = gridDataMap.get(leadColumnIdentity);
     const builderPromises = [];
+
+    ColumnContainer.$maxColumnWidth = (100 - 2) / (gridDataMap.size - 1);
 
     if (isRefresh) {
       this.gridContainer.innerHTML = "";

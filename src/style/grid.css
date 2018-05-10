@@ -3,7 +3,6 @@
 @import "./columns/leadColumn.css";
 @import "./columns/dropdownColumn.css";
 @import "./columns/checkboxColumn.css";
-
 input {
   margin: 0;
   padding: 5px;
@@ -31,6 +30,7 @@ a {
   border: solid 1px #000;
   border-right: unset;
   border-bottom: unset;
+  border-top: unset;
   position: relative;
   box-sizing: border-box;
 }
@@ -38,13 +38,15 @@ a {
 #grid-container .column {
   display: grid;
   grid-template-areas: "title cell-border" ". cell-border" ". cell-border" var(--cell-template-areas);
-  grid-template-columns: auto 1px;
+  grid-template-columns: auto 4px;
   grid-template-rows: var(--grid-header-cell-height) 0 0 repeat(var(--sum-of-cell), auto);
+  border-top: solid 1px #000;
+  ;
+  box-sizing: border-box;
 }
 
 #grid-container.on-search .column {
-  grid-template-rows: var(--grid-header-cell-height) -
-  var(--grid-search-cell-height) 0 repeat(var(--sum-of-cell), auto);
+  grid-template-rows: var(--grid-header-cell-height) var(--grid-search-cell-height) 0 repeat(var(--sum-of-cell), auto);
 }
 
 #grid-container.on-add-row .column {
@@ -81,7 +83,6 @@ a {
   background: #ccc;
 }
 
-
 #grid-container .column label {
   cursor: pointer;
 }
@@ -108,4 +109,5 @@ a {
 
 #grid-container .column .resize-border {
   cursor: col-resize;
+  background: #000;
 }

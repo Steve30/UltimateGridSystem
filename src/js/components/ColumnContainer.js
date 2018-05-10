@@ -42,6 +42,14 @@ export class ColumnContainer {
     return this.templateColumnsStyle;
   }
 
+  static set $maxColumnWidth(value) {
+    this.maxColumnWidth = `${value}%`;
+  }
+
+  static get $maxColumnWidth() {
+    return this.maxColumnWidth;
+  }
+
   constructor(columnName, columnConfig) {
     this.container = document.querySelector("#column-template").cloneNode();
     this.columnName = columnName;
@@ -56,7 +64,7 @@ export class ColumnContainer {
       this.initOrderClass();
     }
 
-    ColumnContainer.$templateColumnsStyle = !width ? "auto" : width;
+    ColumnContainer.$templateColumnsStyle = !width ? `minmax(100px, ${ColumnContainer.$maxColumnWidth})` : width;
 
     this.sumOfCells = set.size;
     this.setCellTemplateAreas();
@@ -120,7 +128,9 @@ export class ColumnContainer {
   }
 
   static setCurrentTemplateColumn(index, value) {
-    this.templateColumnsStyle[index] = `${value}px`;
+    value = value < 200 ? 200 : value;
+
+    this.templateColumnsStyle[index] = `minmax(100px,${value}px)`;
   }
 
   setCellTemplateAreas() {
