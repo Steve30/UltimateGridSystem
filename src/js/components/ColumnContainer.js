@@ -306,14 +306,19 @@ export class ColumnContainer {
   }
 
   setDragAndDropAction() {
+    let draggedId = null;
+
     this.columnEl.draggable = true;
 
     this.columnEl.addEventListener("dragstart", (event) => {
+
       const {
-        target: {
+        currentTarget: {
           id
         }
       } = event;
+
+      draggedId = id;
 
       event.dataTransfer.setData("text", id);
       event.dataTransfer.effectAllowed = "move";
@@ -324,21 +329,48 @@ export class ColumnContainer {
       event.dataTransfer.dropEffect = "move";
     })
 
-    this.columnEl.addEventListener("drop", (event) => {
+    this.columnEl.addEventListener("dragenter", (event) => {
       event.preventDefault();
 
       const {
         currentTarget: {
-          id
+          id,
+          classList
         }
       } = event;
 
-      document.dispatchEvent(new CustomEvent("dropColumn", {
-        detail: {
-          dragged: event.dataTransfer.getData("text"),
-          dropped: id
+      const currentDropPlaceEl = document.querySelector(".current-drop-place");
+
+      if (currentDropPlaceEl && currentDropPlaceEl.id !== id) {
+        currentDropPlaceEl.classList.remove("current-drop-place");
+      }
+
+      if (id !== draggedId && !classList.contains("current-drop-place")) {
+        classList.add("current-drop-place");
+      }
+
+    })
+
+    this.columnEl.addEventListener("drop", (event) => {
+      event.preventDefault();
+
+      const dragged = event.dataTransfer.getData("text");
+      const {
+        currentTarget: {
+          id: dropped,
+          classList
         }
-      }))
+      } = event;
+
+      if (dragged !== dropped) {
+        classList.remove("current-drop-place");
+        document.dispatchEvent(new CustomEvent("dropColumn", {
+          detail: {
+            dragged,
+            dropped
+          }
+        }))
+      }
     })
   }
 

@@ -141,6 +141,7 @@ export class TableContainer {
         dropped
       }
     }) => {
+
       const dragIndex = columnConfigs.findIndex(({
         id
       }) => id === dragged);

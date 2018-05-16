@@ -45,6 +45,10 @@ a {
   box-sizing: border-box;
 }
 
+#grid-container .column.current-drop-place {
+  outline: dotted 2px red;
+}
+
 #grid-container.on-search .column {
   grid-template-rows: var(--grid-header-cell-height) var(--grid-search-cell-height) 0 repeat(var(--sum-of-cell), auto);
 }
