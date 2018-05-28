@@ -1,7 +1,9 @@
 import {
   ColumnContainer
 } from "./ColumnContainer.js";
-import { DropdownBuilder } from "../builders/dropdownBuilder.js";
+import {
+  DropdownBuilder
+} from "../builders/dropdownBuilder.js";
 
 export class DropdownColumnContainer extends ColumnContainer {
   static set $currentDropdownConstructor(value) {
@@ -53,12 +55,12 @@ export class DropdownColumnContainer extends ColumnContainer {
       <nav></nav>
     </div>` : "";
 
-    const cellTemplates = values.map((value, index) => `<div class="dropdown-holder cell-row">
-      <label style="grid-area: cell-${index}" class="cell-label">
+    const cellTemplates = values.map((value, index) => `<div class="dropdown-holder cell-row ${this.dragAndDropRow ? "drop-row" : ""}">
+      ${this.renderCellContent(`<label style="grid-area: cell-${index}" class="cell-label">
         <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
         <i class="fa fa-chevron-down"></i>
       </label>
-      <nav></nav>
+      <nav></nav>`)}
     </div>`).join("");
 
     this.setExistRowValues(values);
@@ -78,6 +80,8 @@ export class DropdownColumnContainer extends ColumnContainer {
   }
 
   afterContentInit() {
+    super.afterContentInit();
+
     const dropdownSet = DropdownBuilder.getCurrentDropdown(this.columnName);
 
     this.dropdownElements.forEach((element, index) => {
@@ -143,7 +147,13 @@ export class DropdownColumnContainer extends ColumnContainer {
   onClickedItem(event) {
     event.preventDefault();
 
-    const { target: { dataset: { value } } } = event;
+    const {
+      target: {
+        dataset: {
+          value
+        }
+      }
+    } = event;
     this.currentDropdown.control.value = value === "-all-" ? "" : value;
     this.currentDropdown.dispatchEvent(new Event("click"));
 

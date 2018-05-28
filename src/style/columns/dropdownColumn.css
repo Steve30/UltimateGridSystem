@@ -1,7 +1,15 @@
+.column.dropdown .cell-label {
+  border: unset !important;
+}
+
 .column.dropdown .dropdown-holder {
   position: relative;
   display: flex;
   width: 100%;
+}
+
+.column.dropdown .cell-row.dropdown-holder {
+  border-bottom: solid 1px #000;
 }
 
 .column.dropdown .dropdown-holder label {

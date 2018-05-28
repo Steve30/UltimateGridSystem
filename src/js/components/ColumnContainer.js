@@ -57,12 +57,15 @@ export class ColumnContainer {
     const {
       width,
       set,
-      isOrder
+      isOrder,
+      dragAndDropRow
     } = columnConfig;
 
     if (isOrder) {
       this.initOrderClass();
     }
+
+    this.dragAndDropRow = dragAndDropRow;
 
     ColumnContainer.$templateColumnsStyle = !width ? `minmax(100px, ${ColumnContainer.$maxColumnWidth})` : width;
 
@@ -98,8 +101,8 @@ export class ColumnContainer {
       <input type="text" class="add-row" name='addrow-${columnName}' placeholder="Create ${columnName}"/>
     </label>` : "";
 
-    const cellTemplates = values.map((value, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
-      <input type="text" value="${value}" name="${columnName}-${index}" readonly/>
+    const cellTemplates = values.map((value, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row ${this.dragAndDropRow ? "drop-row" : ""}">
+      ${this.renderCellContent(`<input type="text" value="${value}" name="${columnName}-${index}" readonly/>`)}
     </label>`).join("");
 
     this.setExistRowValues(values);
@@ -111,6 +114,18 @@ export class ColumnContainer {
       ${cellTemplates}
       <a href="" class="resize-border" style="grid-area: cell-border"></a>
     </div>`;
+  }
+
+  renderCellContent(originalContent) {
+    let content = originalContent;
+
+    if (this.dragAndDropRow) {
+      content = `<span class="drop-area-row"></span>
+      ${originalContent}
+      <span class="drop-area-row"></span>`;
+    }
+
+    return content;
   }
 
   setExistRowValues(values) {
@@ -173,7 +188,52 @@ export class ColumnContainer {
 
   // Override
   afterContentInit() {
+    if (this.dragAndDropRow) {
+      const allDropRowElements = this.columnEl.querySelectorAll(".drop-row");
 
+      ColumnContainer.setDropElementCollections(this.columnEl.id, Array.from(allDropRowElements));
+
+      allDropRowElements.forEach((element, index) => {
+        element.setAttribute("draggable", true);
+
+        element.querySelectorAll(".drop-area-row").forEach((dropElement) => {
+          dropElement.ondrop = (event) => {
+            event.preventDefault();
+          }
+        })
+
+        element.ondragstart = (event) => {
+          ColumnContainer.setActiveDropAreaRow(index);
+        }
+
+        element.ondragend = (event) => {
+          document.querySelectorAll(".active-drop-row").forEach((activeDropRow) => {
+            activeDropRow.classList.remove("active-drop-row");
+          })
+        }
+      })
+    }
+  }
+
+  static setDropElementCollections(id, elements) {
+
+    if (this.dropElementCollections instanceof Map) {
+      this.dropElementCollections.set(id, elements);
+    } else {
+      this.dropElementCollections = new Map([
+        [id, elements]
+      ]);
+    }
+  }
+
+  static setActiveDropAreaRow(index) {
+    this.dropElementCollections.forEach((elements) => {
+      const filteredElements = elements.filter((item, elementIndex) => index !== elementIndex);
+
+      filteredElements.forEach((element) => {
+        element.classList.add("active-drop-row");
+      })
+    })
   }
 
   setCssVariable() {

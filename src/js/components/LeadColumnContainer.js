@@ -1,5 +1,9 @@
-import { ColumnContainer } from "./ColumnContainer.js";
-import { TableContainer } from "./TableContainer.js";
+import {
+  ColumnContainer
+} from "./ColumnContainer.js";
+import {
+  TableContainer
+} from "./TableContainer.js";
 
 export class LeadColumnContainer extends ColumnContainer {
   constructor(columnConfig) {
@@ -10,19 +14,30 @@ export class LeadColumnContainer extends ColumnContainer {
   }
 
   render(columnName, columnConfig) {
-    const { isSearchRow, isAddRow, set, isCheck } = columnConfig;
+    const {
+      isSearchRow,
+      isAddRow,
+      set,
+      isCheck
+    } = columnConfig;
 
-    const checkTemplate = isCheck ? `<span class="check-holder"><i class="fa fa-check"></i></span>` : "";
+    const checkTemplate = isCheck ? `<span class="cell-content"><span class="check-holder"><i class="fa fa-check"></i></span></span>` : "";
 
     const searchButton = isSearchRow ? `<a href="" class="search-button search-row"><i class="fa fa-search"></i></a>` : "";
 
     const addButton = isAddRow ? `<a href="" class="add-button add-row"><i class="fa fa-plus"></i></a>` : "";
 
-    const cellTemplates = Array.from(set).map(({ value }, index) => `<a href="" class="row-number cell-row" data-id="${value}" style="grid-area: cell-${index}"
-    >${checkTemplate}</a>`).join("");
+    const cellTemplates = Array.from(set).map(({
+      value
+    }, index) => `<a href="" class="row-number cell-row ${this.dragAndDropRow ? "drop-row" : ""}" data-id="${value}" style="grid-area: cell-${index}"
+    >${this.renderCellContent(checkTemplate)}</a>`).join("");
 
-    ColumnContainer.existRowChanges = Array.from(set).map(({value}) => {
-      return {rowId: value}
+    ColumnContainer.existRowChanges = Array.from(set).map(({
+      value
+    }) => {
+      return {
+        rowId: value
+      }
     });
 
     this.isCheck = isCheck;
@@ -51,7 +66,9 @@ export class LeadColumnContainer extends ColumnContainer {
         event.preventDefault();
         event.stopPropagation();
 
-        const { currentTarget } = event;
+        const {
+          currentTarget
+        } = event;
         const elementTypeByClassName = currentTarget.classList.item(0);
 
         switch (elementTypeByClassName) {

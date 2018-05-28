@@ -79,6 +79,30 @@ a {
   background: lightgreen;
 }
 
+#grid-container .column .drop-row {
+  flex-direction: column;
+  justify-content: unset;
+}
+
+#grid-container .column .drop-row .cell-content {
+  flex-grow: 1;
+  align-items: center;
+}
+
+#grid-container .column .drop-area-row {
+  height: 0;
+  width: 100%;
+  border: dotted 0 red;
+  border-left: unset;
+  border-right: unset;
+  transition: height 0.5s linear, border 0.5s linear;
+}
+
+#grid-container .column .active-drop-row .drop-area-row {
+  height: 18px;
+  border-width: 1px;
+}
+
 #grid-container .column .cell-row:nth-child(even) {
   background: #fff;
 }

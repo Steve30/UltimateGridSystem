@@ -12,6 +12,7 @@ const tableContainer = new TableContainer({
   isSearchRow: true,
   isAddRow: true,
   dragAndDropColumn: true,
+  dragAndDropRow: true,
   isLeadColumnCheck: true
 });
 

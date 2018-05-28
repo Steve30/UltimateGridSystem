@@ -1,4 +1,6 @@
-import { ColumnContainer } from "./ColumnContainer.js";
+import {
+  ColumnContainer
+} from "./ColumnContainer.js";
 
 export class CheckboxColumnContainer extends ColumnContainer {
   constructor(columnName, columnConfig) {
@@ -6,7 +8,15 @@ export class CheckboxColumnContainer extends ColumnContainer {
   }
 
   render(columnName, columnConfig) {
-    const { isSearchRow, isAddRow, set, searchValue, dragAndDropColumn, title, sortClass } = columnConfig;
+    const {
+      isSearchRow,
+      isAddRow,
+      set,
+      searchValue,
+      dragAndDropColumn,
+      title,
+      sortClass
+    } = columnConfig;
 
     const values = Array.from(set).map(({
       value
@@ -30,9 +40,11 @@ export class CheckboxColumnContainer extends ColumnContainer {
       <input type="checkbox" class="add ${this.typeOfCheckboxClass}" name='addrow-${columnName}' value="true"/>
     </label>` : "";
 
-    const cellTemplates = values.map((value, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row">
-      <input type="checkbox"  ${value ? "checked" : ""} name="${columnName}-${index}" value="${value ? 'false' : 'true'}" class="${this.typeOfCheckboxClass}"/>
-      <span>State:</span>
+    const cellTemplates = values.map((value, index) => `<label style="grid-area: cell-${index}" class="cell-label cell-row ${this.dragAndDropRow ? "drop-row" : ""}">
+      ${this.renderCellContent(`<span class="cell-content">
+        <input type="checkbox"  ${value ? "checked" : ""} name="${columnName}-${index}" value="${value ? 'false' : 'true'}" class="${this.typeOfCheckboxClass}"/>
+        <span>State:</span>
+      </span>`)}
     </label>`).join("");
 
     this.setExistRowValues(values);

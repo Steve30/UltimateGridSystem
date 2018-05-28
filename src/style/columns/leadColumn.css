@@ -31,6 +31,10 @@
   display: flex;
 }
 
+#grid-container #lead.check-column .cell-content {
+  display: flex;
+}
+
 #grid-container #lead.check-column .check-holder i {
   visibility: hidden;
 }

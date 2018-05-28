@@ -38,13 +38,15 @@ export class TableContainer {
       isSearchRow,
       isAddRow,
       dragAndDropColumn,
-      isLeadColumnCheck
+      isLeadColumnCheck,
+      dragAndDropRow
     } = config;
 
     this.searchEvent = new SearchEvent(this);
     this.dataAdapter = new DataAdapter();
     this.columnBuilder = new ColumnBuilder();
 
+    this.dragAndDropRow = dragAndDropRow;
     this.dragAndDropColumn = dragAndDropColumn;
     this.isLeadColumnCheck = isLeadColumnCheck;
     this.isSearchRow = isSearchRow;
@@ -240,6 +242,7 @@ export class TableContainer {
 
       if (this.isLeadColumnCheck) {
         leadColumn.isCheck = this.isLeadColumnCheck;
+        leadColumn.dragAndDropRow = this.dragAndDropRow;
       }
 
       builderPromises.push(this.columnBuilder.promiseBuild(leadColumn)
@@ -253,6 +256,7 @@ export class TableContainer {
 
       if (columnName !== leadColumnIdentity) {
         columnConfig.dragAndDropColumn = this.dragAndDropColumn;
+        columnConfig.dragAndDropRow = this.dragAndDropRow;
 
         builderPromises.push(this.columnBuilder.promiseBuild(columnConfig, columnName)
           .then((createdContainer) => {
