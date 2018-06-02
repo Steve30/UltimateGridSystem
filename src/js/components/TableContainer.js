@@ -63,9 +63,13 @@ export class TableContainer {
 
   }
 
-  async renderGridLayout() {
-    this.layout.appendChild(this.clonedContent);
-    return true;
+  renderGridLayout() {
+    const self = this;
+
+    return new Promise((resolve) => {
+      self.layout.appendChild(this.clonedContent);
+      resolve(true);
+    })
   }
 
   initGridTable() {
