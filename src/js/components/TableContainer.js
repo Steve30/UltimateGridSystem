@@ -67,7 +67,7 @@ export class TableContainer {
     const self = this;
 
     return new Promise((resolve) => {
-      self.layout.appendChild(this.clonedContent);
+      self.layout.appendChild(self.clonedContent);
       resolve(true);
     })
   }
