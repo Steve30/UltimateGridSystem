@@ -17,10 +17,11 @@
   },
   "homepage": "https://github.com/Steve30/UltimateGridSystem#readme",
   "devDependencies": {
-    "browser-sync": "^2.23.6",
-    "gulp": "^3.9.1"
+    "browser-sync": "^2.24.4",
+    "git-guppy": "^2.1.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^4.0.2",
+    "gulp-filter": "^5.1.0"
   },
-  "dependencies": {
-    "npm": "^5.8.0"
-  }
+  "dependencies": {}
 }
