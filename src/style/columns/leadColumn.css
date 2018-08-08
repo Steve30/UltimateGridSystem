@@ -1,6 +1,7 @@
 #grid-container #lead {
   counter-reset: row-counter;
   grid-template-columns: auto 1px;
+  border-left: solid 1px #000;
 }
 
 #grid-container #lead a {

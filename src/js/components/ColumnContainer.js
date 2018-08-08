@@ -1,7 +1,6 @@
 import {
   DataAdapter
 } from "../adapters/dataAdapter.js";
-
 import {
   default as defaultOrder
 } from "../orders/defaultOrder.js";
@@ -108,9 +107,11 @@ export class ColumnContainer {
     this.setExistRowValues(values);
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
-      <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
-      ${searchTemplate}
-      ${addRowTemplate}
+      <header>
+        <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
+        ${searchTemplate}
+        ${addRowTemplate}
+      </header>
       ${cellTemplates}
       <a href="" class="resize-border" style="grid-area: cell-border"></a>
     </div>`;

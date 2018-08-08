@@ -16,14 +16,6 @@ gulp.task('lint', () => {
       .pipe(gulpEslint.failAfterError());
 });
 
-gulp.task('pre-commit', () => {
-  return gulp.src(guppy.src("pre-commit"))
-    .pipe(gulpFilter(["src/js/**/*.js"]))
-    .pipe(gulpEslint())
-    .pipe(gulpEslint.format())
-    .pipe(gulpEslint.failAfterError());
-});
-
 // Static server
 gulp.task('browser-sync', ["pre-commit"], () => {
     browserSync.init({

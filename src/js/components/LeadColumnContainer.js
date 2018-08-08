@@ -43,9 +43,11 @@ export class LeadColumnContainer extends ColumnContainer {
     this.isCheck = isCheck;
 
     this.container.innerHTML = `<div id="${columnName}" class="column ${isCheck ? 'check-column' : ''}">
-      <a href="" class="title">${checkTemplate}</a>
-      ${searchButton}
-      ${addButton}
+      <header>
+        <a href="" class="title">${checkTemplate}</a>
+        ${searchButton}
+        ${addButton}
+      </header>
       ${cellTemplates}
       <span class="end-border" style="grid-area: cell-border"></span>
     </div>`;
