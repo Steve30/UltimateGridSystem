@@ -1,28 +1,27 @@
 const gulp        = require('gulp');
 const browserSync = require('browser-sync').create();
-const guppy = require("git-guppy")(gulp);
 const gulpEslint = require("gulp-eslint");
-const gulpFilter = require("gulp-filter");
 
-gulp.task('css', () => {
+const refreshBrowser = () => {
   return gulp.src("./src/style/**/*.css")
     .pipe(browserSync.stream());
-});
+}
 
-gulp.task('lint', () => {
-    return gulp.src('./src/js/**/*.js')
-      .pipe(gulpEslint())
-      .pipe(gulpEslint.format())
-      .pipe(gulpEslint.failAfterError());
-});
+const watchScss = () => {
+  return gulp.watch("./src/style/**/*.css", gulp.series(refreshBrowser));
+}
 
-// Static server
-gulp.task('browser-sync', ["pre-commit"], () => {
-    browserSync.init({
-        server: {
-            baseDir: "./"
-        }
-    });
+const createServer = () => {
+  return browserSync.init({
+    server: {
+        baseDir: "./"
+    }
+  });
+}
 
-  gulp.watch("./src/style/**/*.css", ["css"]);
-});
+const watches = gulp.parallel(watchScss);
+const initServer = gulp.series(createServer);
+
+const developmentTask = gulp.parallel(initServer, watches);
+
+gulp.task("build", developmentTask);

@@ -8,7 +8,7 @@ import {
 export class LeadColumnContainer extends ColumnContainer {
   constructor(columnConfig) {
 
-    columnConfig.width = "2%";
+    columnConfig.width = "25px";
 
     super("lead", columnConfig);
   }
@@ -49,6 +49,7 @@ export class LeadColumnContainer extends ColumnContainer {
         ${addButton}
       </header>
       ${cellTemplates}
+      <footer></footer>
       <span class="end-border" style="grid-area: cell-border"></span>
     </div>`;
   }

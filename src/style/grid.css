@@ -32,14 +32,16 @@ a {
   box-sizing: border-box;
   overflow: auto;
   height: 500px;
+  width: 300px;
 }
 
 #grid-container .column {
   display: grid;
-  grid-template-areas: "header cell-border" var(--cell-template-areas);
+  grid-template-areas: "header cell-border" var(--cell-template-areas) "footer cell-border";
   grid-template-columns: auto 4px;
   grid-template-rows: var(--grid-header-cell-height) 0 0 repeat(var(--sum-of-cell), auto);
   box-sizing: border-box;
+  position: sticky;
 }
 
 #grid-container .column header {
@@ -49,6 +51,18 @@ a {
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+#grid-container .column footer {
+  display: flex;
+  grid-area: footer;
+  min-height: 25px;
+  background: #fff;
+  box-sizing: border-box;
+  border-bottom: solid 1px #000;
+  border-top: solid 1px #000;
+  position: sticky;
+  bottom: 0;
 }
 
 #grid-container .column header > *,

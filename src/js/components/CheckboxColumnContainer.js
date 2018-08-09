@@ -56,6 +56,7 @@ export class CheckboxColumnContainer extends ColumnContainer {
         ${addRowTemplate}
       </header>
       ${cellTemplates}
+      <footer></footer>
       <a href="" class="resize-border" style="grid-area: cell-border"></a>
     </div>`;
   }
