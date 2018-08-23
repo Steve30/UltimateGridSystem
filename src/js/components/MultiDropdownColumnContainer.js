@@ -22,8 +22,8 @@ export class MultiDropdownColumnContainer extends DropdownColumnContainer {
     return Array.from(dropdownSet).map(value => `<a href="" data-check="&#x2713;" data-value="${value}"><span>${value}</span></a>`).join("");
   }
 
-  afterInserted() {
-    super.afterInserted();
+  afterInserted(store) {
+    super.afterInserted(store);
   }
 
   initClickEventForItem(clickElements, isRemove = false) {

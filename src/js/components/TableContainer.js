@@ -1,35 +1,37 @@
 import {
-  ColumnContainer
-} from "./ColumnContainer.js";
-import {
-  SearchEvent
-} from "../events/searchEvent.js";
-import {
-  DataAdapter
-} from "../adapters/dataAdapter.js";
-import {
+  columnConfigs,
   defaultConfig,
-  leadColumnIdentity,
-  columnConfigs
+  leadColumnIdentity
 } from "../gridConfig.js";
-import {
-  stringFilter
-} from "../filters/stringFilter.js";
-import {
-  multiStringFilter
-} from "../filters/multiStringFilter.js";
+
 import {
   ColumnBuilder
 } from "../builders/columnBuilder.js";
 import {
+  ColumnContainer
+} from "./ColumnContainer.js";
+import {
+  DataAdapter
+} from "../adapters/dataAdapter.js";
+import {
   DropdownBuilder
 } from "../builders/dropdownBuilder.js";
+import {
+  GridSettingsStore
+} from "./GridSettingsStore.js";
+import {
+  SearchEvent
+} from "../events/searchEvent.js";
 import {
   booleanFilter
 } from "../filters/booleanFilter.js";
 import {
-  GridSettingsStore
-} from "./GridSettingsStore.js";
+  multiStringFilter
+} from "../filters/multiStringFilter.js";
+import pinStore from "../stateSystem/store/pinStore/index.js";
+import {
+  stringFilter
+} from "../filters/stringFilter.js";
 
 export class TableContainer {
 
@@ -61,6 +63,37 @@ export class TableContainer {
     this.container = document.querySelector("#grid-template");
     this.clonedContent = document.importNode(this.container.content, true);
 
+    this.pinStore = pinStore;
+
+    this.pinStore.events.subscribe("stateChange", ({pinnedColumns}) => {
+
+      const columns = Array.from(this.gridContainer.querySelectorAll(".column")).filter((element) => element.id !== "lead");
+
+      columns.forEach((element) => {
+        element.classList.remove("pinned");
+      });
+
+      if (pinnedColumns.size !== 0) {
+        for (const pinColumn of this.generatePinnedColumns(columns, pinnedColumns)) {
+          pinColumn.classList.add("pinned");
+        }
+      }
+
+    });
+  }
+
+  *generatePinnedColumns (columns, pinnedColumns) {
+    let isLatestPinnedColumn = false;
+
+    for (const [ , column] of columns.entries()) {
+      if (!isLatestPinnedColumn) {
+        yield column;
+
+        if (pinnedColumns.has(column.id)) {
+          isLatestPinnedColumn = true;
+        }
+      }
+    }
   }
 
   renderGridLayout() {
@@ -129,8 +162,18 @@ export class TableContainer {
     this.renderColumns().then((columnContainers) => {
       DropdownBuilder.build(this.columnBuilder.defaultColumnMap);
 
-      columnContainers.forEach((column) => {
+      let incrementWidth = 0;
+
+      columnContainers.forEach((column, index, _columns) => {
         column.afterContentInit();
+
+        const nextColumnContainer = columnContainers[index + 1];
+
+        if (nextColumnContainer) {
+          incrementWidth += column.columnEl.offsetWidth;
+          nextColumnContainer.columnEl.style.setProperty("--left-sticky-position", `${incrementWidth}px`);
+        }
+
       })
     }).catch(error => {
       console.error(error);
@@ -269,12 +312,12 @@ export class TableContainer {
           }));
       }
 
-    };
+    }
 
     return Promise.all(builderPromises)
       .then(columnContainers => {
         columnContainers.forEach(columnContainer => {
-          columnContainer.afterInserted();
+          columnContainer.afterInserted(this.pinStore);
         })
 
         return columnContainers;

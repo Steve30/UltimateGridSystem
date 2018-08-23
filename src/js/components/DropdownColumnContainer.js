@@ -67,7 +67,13 @@ export class DropdownColumnContainer extends ColumnContainer {
 
     this.container.innerHTML = `<div id="${columnName}" class="column dropdown ${type}">
       <header>
-        <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
+        <a href="" class="title">
+          <span>${title}</span>
+          <span>
+            ${this.order ? this.order.getTemplate(sortClass) : ""}
+            <i class="pin fas fa-thumbtack"></i>
+          </span>
+        </a>
         ${searchTemplate}
         ${addRowTemplate}
       </header>
@@ -77,8 +83,8 @@ export class DropdownColumnContainer extends ColumnContainer {
     </div>`;
   }
 
-  afterInserted() {
-    super.afterInserted();
+  afterInserted(store) {
+    super.afterInserted(store);
     this.dropdownElements = this.columnEl.querySelectorAll(".dropdown-holder label");
   }
 

@@ -108,7 +108,13 @@ export class ColumnContainer {
 
     this.container.innerHTML = `<div id="${columnName}" class="column">
       <header>
-        <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
+        <a href="" class="title">
+          <span>${title}</span>
+          <span>
+            ${this.order ? this.order.getTemplate(sortClass) : ""}
+            <i class="pin fas fa-thumbtack"></i>
+          </span>
+        </a>
         ${searchTemplate}
         ${addRowTemplate}
       </header>
@@ -164,7 +170,7 @@ export class ColumnContainer {
     return document.importNode(this.container.content, true);
   }
 
-  afterInserted() {
+  afterInserted(store) {
     this.setCssVariable();
     this.addPromiseSearchField();
     this.subscribeCellClickEvent();
@@ -184,6 +190,16 @@ export class ColumnContainer {
 
       if (target.classList.contains("sort")) {
         this.order.sortAction(target);
+      }
+
+      if (target.classList.contains("pin")) {
+
+        if (store.state.pinnedColumns.has(this.columnName)) {
+          store.dispatch("unPinItem", this.columnName);
+        } else {
+          store.dispatch("pinItem", this.columnName);
+        }
+
       }
     })
   }

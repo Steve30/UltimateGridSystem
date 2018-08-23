@@ -51,7 +51,13 @@ export class CheckboxColumnContainer extends ColumnContainer {
 
     this.container.innerHTML = `<div id="${columnName}" class="column checkbox">
       <header>
-        <a href="" class="title">${title}${this.order ? this.order.getTemplate(sortClass) : ""}</a>
+        <a href="" class="title">
+          <span>${title}</span>
+          <span>
+            ${this.order ? this.order.getTemplate(sortClass) : ""}
+            <i class="pin fas fa-thumbtack"></i>
+          </span>
+        </a>
         ${searchTemplate}
         ${addRowTemplate}
       </header>

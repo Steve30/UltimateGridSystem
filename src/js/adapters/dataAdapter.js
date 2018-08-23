@@ -42,402 +42,642 @@ export class DataAdapter {
       [leadColumnIdentity]: 1,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
       [leadColumnIdentity]: 2,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
       [leadColumnIdentity]: 3,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
       [leadColumnIdentity]: 4,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
       [leadColumnIdentity]: 5,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 6,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 7,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 8,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 9,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 10,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 11,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 12,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 13,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 14,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 15,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 16,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 17,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 18,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 19,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 20,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 21,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 22,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 23,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 24,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 25,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 26,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 27,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 28,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 29,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 30,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 31,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 32,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 33,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 34,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 35,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 36,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 37,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 38,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 39,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 40,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 41,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 42,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 43,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 44,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 45,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 46,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 47,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 48,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 49,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 50,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 51,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 52,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 53,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 54,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 55,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 56,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 57,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 58,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 59,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 60,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 61,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 62,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 64,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 65,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 66,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 67,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 68,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 69,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 70,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 71,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 72,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 73,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 74,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 75,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 76,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     },{
-      [leadColumnIdentity]: 1,
+      [leadColumnIdentity]: 77,
       names: "István",
       sexes: "Férfi",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 2,
+      [leadColumnIdentity]: 78,
       names: "Zsófia",
       sexes: "Lány",
-      adults: false
+      adults: false,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 3,
+      [leadColumnIdentity]: 79,
       names: "Viktóra",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 4,
+      [leadColumnIdentity]: 80,
       names: "Tímea",
       sexes: "Nő",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }, {
-      [leadColumnIdentity]: 5,
+      [leadColumnIdentity]: 81,
       names: "Athos",
       sexes: "",
-      adults: true
+      adults: true,
+      city: "Monor",
+      zipcode: 2200,
+      street: "Szilágyi Dezső utca 1."
     }];
 
     this.defaultRows = this.rows.slice(0);
