@@ -20,8 +20,7 @@ const columnConfigs = [{
   type: "simple",
   isAddRow: true,
   isSearchRow: true,
-  isOrder: true,
-  width: "400px"
+  isOrder: true
 }, {
   id: "sexes",
   title: "Sexes",
@@ -29,8 +28,7 @@ const columnConfigs = [{
   type: "multi-dropdown",
   isAddRow: true,
   isSearchRow: true,
-  isOrder: true,
-  width: "400px"
+  isOrder: true
 }, {
   id: "adults",
   title: "Adults",
@@ -38,8 +36,7 @@ const columnConfigs = [{
   type: "checkbox",
   isAddRow: true,
   isSearchRow: true,
-  isOrder: true,
-  width: "400px"
+  isOrder: true
 }, {
   id: "city",
   title: "City",
@@ -47,8 +44,7 @@ const columnConfigs = [{
   type: "simple",
   isAddRow: true,
   isSearchRow: true,
-  isOrder: true,
-  width: "400px"
+  isOrder: true
 }, {
   id: "zipcode",
   title: "Zipcode",
@@ -56,8 +52,7 @@ const columnConfigs = [{
   type: "simple",
   isAddRow: true,
   isSearchRow: true,
-  isOrder: true,
-  width: "400px"
+  isOrder: true
 }, {
   id: "street",
   title: "Street",
@@ -65,8 +60,7 @@ const columnConfigs = [{
   type: "simple",
   isAddRow: true,
   isSearchRow: true,
-  isOrder: true,
-  width: "400px"
+  isOrder: true
 }];
 
 export {

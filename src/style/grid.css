@@ -37,7 +37,7 @@ a {
 #grid-container .column {
   display: grid;
   grid-template-areas: "header cell-border" var(--cell-template-areas) "footer cell-border";
-  grid-template-columns: auto 4px;
+  grid-template-columns: auto 2px;
   grid-template-rows: var(--grid-header-cell-height) 0 0 repeat(var(--sum-of-cell), auto);
   box-sizing: border-box;
   position: sticky;
@@ -55,6 +55,10 @@ a {
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+#grid-container .column header span {
+  white-space: nowrap;
 }
 
 #grid-container .column footer {
@@ -75,7 +79,7 @@ a {
   box-sizing: border-box;
 }
 
-#grid-container .column.current-drop-place {
+#grid-container .column header.current-drop-place {
   outline: dotted 2px red;
 }
 
@@ -173,5 +177,22 @@ a {
 
 #grid-container .column .resize-border {
   cursor: col-resize;
-  background: #000;
+  border: solid 1px #000;
+  border-top: unset;
+  border-bottom: unset;
+  width: 0;
+}
+
+#grid-container .column.pinned .pin {
+  color: rgb(158,158,158);
+}
+
+#grid-container .column.pinned .resize-border {
+  cursor: default;
+}
+
+#grid-container .column.last-pinned .resize-border{
+  border-color: rgb(158,158,158);
+  border-left-style: dotted;
+  border-right-style: dotted;
 }

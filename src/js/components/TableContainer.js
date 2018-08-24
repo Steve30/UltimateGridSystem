@@ -70,12 +70,12 @@ export class TableContainer {
       const columns = Array.from(this.gridContainer.querySelectorAll(".column")).filter((element) => element.id !== "lead");
 
       columns.forEach((element) => {
-        element.classList.remove("pinned");
+        element.classList.remove(...["pinned", "last-pinned"]);
       });
 
       if (pinnedColumns.size !== 0) {
-        for (const pinColumn of this.generatePinnedColumns(columns, pinnedColumns)) {
-          pinColumn.classList.add("pinned");
+        for (const {pinColumn, classNames} of this.generatePinnedColumns(columns, pinnedColumns)) {
+          pinColumn.classList.add(...classNames);
         }
       }
 
@@ -87,10 +87,12 @@ export class TableContainer {
 
     for (const [ , column] of columns.entries()) {
       if (!isLatestPinnedColumn) {
-        yield column;
 
         if (pinnedColumns.has(column.id)) {
+          yield {pinColumn: column, classNames: ["pinned", "last-pinned"]};
           isLatestPinnedColumn = true;
+        } else {
+          yield {pinColumn: column, classNames: ["pinned"]};
         }
       }
     }
@@ -256,6 +258,12 @@ export class TableContainer {
     } = event;
 
     if (buttons === 1 && ColumnContainer.$selectedResizeColumn) {
+
+      const hasPinned = ColumnContainer.$selectedResizeColumn.el.classList.contains("pinned");
+
+      if (hasPinned) {
+        return;
+      }
 
       const {
         el: {

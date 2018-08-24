@@ -126,13 +126,6 @@ export class ColumnContainer {
 
   renderCellContent(originalContent) {
     let content = originalContent;
-
-    if (this.dragAndDropRow) {
-      content = `<span class="drop-area-row"></span>
-      ${originalContent}
-      <span class="drop-area-row"></span>`;
-    }
-
     return content;
   }
 
@@ -209,49 +202,70 @@ export class ColumnContainer {
     if (this.dragAndDropRow) {
       const allDropRowElements = this.columnEl.querySelectorAll(".drop-row");
 
-      ColumnContainer.setDropElementCollections(this.columnEl.id, Array.from(allDropRowElements));
+      let draggedItem = null,
+          draggedContent = null,
+          replaceContent = null,
+          isReplaced = false;
 
       allDropRowElements.forEach((element, index) => {
         element.setAttribute("draggable", true);
 
-        element.querySelectorAll(".drop-area-row").forEach((dropElement) => {
-          dropElement.ondrop = (event) => {
-            event.preventDefault();
-          }
-        })
-
         element.ondragstart = (event) => {
-          ColumnContainer.setActiveDropAreaRow(index);
+
+          const {currentTarget} = event;
+
+          draggedItem = currentTarget;
+          draggedContent = currentTarget.innerHTML;
+          event.dataTransfer.effectAllowed = "move";
+
         }
 
-        element.ondragend = (event) => {
-          document.querySelectorAll(".active-drop-row").forEach((activeDropRow) => {
-            activeDropRow.classList.remove("active-drop-row");
-          })
+        element.ondragover = (event) => {
+          event.preventDefault();
+
+          const {currentTarget} = event;
+
+          if (currentTarget.style.gridArea !== draggedItem.style.gridArea && !isReplaced) {
+
+            replaceContent = currentTarget.innerHTML;
+
+            currentTarget.innerHTML = draggedContent;
+            draggedItem.innerHTML = replaceContent;
+
+            isReplaced = true;
+          }
+
         }
+
+        element.ondragleave = (event) => {
+          event.preventDefault();
+
+          if (isReplaced) {
+            const currHtml = event.currentTarget.innerHTML;
+            event.currentTarget.innerHTML = replaceContent;
+            draggedItem.innerHTML = currHtml;
+            isReplaced = false;
+          }
+        }
+
+        element.ondrop = (event) => {
+          event.preventDefault();
+
+          event.dataTransfer.dropEffect = "move";
+
+          const {parentElement} = event.target;
+
+          allDropRowElements.forEach((element, index) => {
+            if (element === parentElement) {
+              console.log(parentElement, index);
+            } else if (element === draggedItem) {
+              console.log(draggedItem, index);
+            }
+          });
+        }
+
       })
     }
-  }
-
-  static setDropElementCollections(id, elements) {
-
-    if (this.dropElementCollections instanceof Map) {
-      this.dropElementCollections.set(id, elements);
-    } else {
-      this.dropElementCollections = new Map([
-        [id, elements]
-      ]);
-    }
-  }
-
-  static setActiveDropAreaRow(index) {
-    this.dropElementCollections.forEach((elements) => {
-      const filteredElements = elements.filter((item, elementIndex) => index !== elementIndex);
-
-      filteredElements.forEach((element) => {
-        element.classList.add("active-drop-row");
-      })
-    })
   }
 
   setCssVariable() {
@@ -386,13 +400,18 @@ export class ColumnContainer {
   setDragAndDropAction() {
     let draggedId = null;
 
-    this.columnEl.draggable = true;
+    const headerEl = this.columnEl.querySelector("header");
 
-    this.columnEl.addEventListener("dragstart", (event) => {
+    headerEl.draggable = true;
+    headerEl.dataset.dragId = this.columnEl.id;
+
+    headerEl.addEventListener("dragstart", (event) => {
 
       const {
         currentTarget: {
-          id
+          parentElement: {
+            id
+          }
         }
       } = event;
 
@@ -402,46 +421,59 @@ export class ColumnContainer {
       event.dataTransfer.effectAllowed = "move";
     })
 
-    this.columnEl.addEventListener("dragover", (event) => {
+    headerEl.addEventListener("dragover", (event) => {
       event.preventDefault();
       event.dataTransfer.dropEffect = "move";
     })
 
-    this.columnEl.addEventListener("dragenter", (event) => {
+    headerEl.addEventListener("dragenter", (event) => {
       event.preventDefault();
 
       const {
         currentTarget: {
-          id,
+          dataset: {
+            dragId
+          },
           classList
         }
       } = event;
 
       const currentDropPlaceEl = document.querySelector(".current-drop-place");
 
-      if (currentDropPlaceEl && currentDropPlaceEl.id !== id) {
+      if (currentDropPlaceEl && currentDropPlaceEl.dataset.dragId !== dragId) {
         currentDropPlaceEl.classList.remove("current-drop-place");
       }
 
-      if (id !== draggedId && !classList.contains("current-drop-place")) {
+      if (dragId !== draggedId && !classList.contains("current-drop-place")) {
         classList.add("current-drop-place");
       }
 
     })
 
-    this.columnEl.addEventListener("drop", (event) => {
+    headerEl.addEventListener("dragend", () => {
+      const currentDropPlaceEl = document.querySelector(".current-drop-place");
+
+      if (currentDropPlaceEl) {
+        currentDropPlaceEl.classList.remove("current-drop-place");
+      }
+    })
+
+    headerEl.addEventListener("drop", (event) => {
       event.preventDefault();
 
       const dragged = event.dataTransfer.getData("text");
       const {
         currentTarget: {
-          id: dropped,
+          dataset: {
+            dragId: dropped
+          },
           classList
         }
       } = event;
 
       if (dragged !== dropped) {
         classList.remove("current-drop-place");
+
         document.dispatchEvent(new CustomEvent("dropColumn", {
           detail: {
             dragged,
